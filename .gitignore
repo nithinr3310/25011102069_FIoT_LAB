@@ -1,0 +1,30 @@
+# Keil / ARM build outputs
+Objects/
+Listings/
+*.axf
+*.elf
+*.hex
+*.bin
+*.map
+*.lst
+*.o
+*.d
+*.crf
+*.dep
+*.lnp
+*.iex
+*.htm
+*.sct
+
+# Keil user-specific files
+*.uvguix.*
+*.uvgu*
+*.uvoptx
+*.bak
+
+# Editor / OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
