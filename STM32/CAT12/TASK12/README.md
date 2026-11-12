@@ -3,7 +3,7 @@
 | Field | Details |
 |---|---|
 | **EXP** | CAT12 |
-| **DATE** | __________________ |
+| **DATE** |23/10/2026 |
 | **NAME OF EXP** | BME280 Sensor Interfacing Using I²C and Bosch Sensor API |
 | **HARDWARE SETUP / PLATFORM** | STM32 Nucleo-F401RE, BME280 sensor module, Keil µVision, STM32 HAL, Bosch BME280 Sensor API |
 | **TASK NO** | CAT12 |
