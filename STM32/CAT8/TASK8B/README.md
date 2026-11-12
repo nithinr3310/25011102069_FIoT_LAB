@@ -1,35 +1,28 @@
-# CAT8 – Task 8C: Short Press vs Long Press
+EXPERIMENT DETAILS
+EXP: CONTINUOUS ASSESMENT 8
+DATE: 18/09/2026
+NAME OF EXP: STM32 GPIO Bring-Up and Switch-Controlled LED
+HARDWARE SETUP / PLATFORM: custom board + STM32F103C(8-B)Tx + PA9 input pull-up; PC13 LED output + STM32CubeMX (MDK-ARM project)
+TASK 8B : Event-Based Control
 
-## EXP
-CAT8
-
-## DATE
-07/11/2026
-
-## NAME OF EXP
-Short Press and Long Press Based LED Control Using STM32
-
-## HARDWARE SETUP / PLATFORM
-STM32 Blue Pill – STM32F103C8T6
-
-- PA0 – Push-button input
-- PC13 – Onboard LED output
-
-## TASK NO
-Task 8C
-
-## Circuit Diagram
+1. Circuit Diagram
+The diagram shows the task pins, clock source and required external connections.
+* Microcontroller / Board: STM32F103C8Tx board (board name not recorded); MCU STM32F103C(8-B)Tx.
+* GPIO / Peripheral pins: PA9 input pull-up; PC13 LED output.
+* Clock: HSE through PLL, 72 MHz SYSCLK.
+* External components: LED and series resistor on PC13, plus a push button on PA9 with internal pull-up.
+* Power Supply: 3.3 V logic supply and common GND.
 ![Circuit Diagram](circuit.png)
 
-## Core Logic / Pseudocode / Code Base
-1. Read the push-button input.
-2. Apply software debouncing with a 30 ms delay.
-3. Measure the duration of each button press.
-4. For a short press (less than 1 second), toggle the LED.
-5. For a long press (1 second or more), toggle blinking mode.
-6. In blinking mode, toggle the LED every 500 ms.
+2. Core Logic / Pseudocode / Code Base
+Working Principle: The program samples PA9 and waits for a stable 20 ms state before accepting a press. A valid press toggles PC13 once.
+Pseudocode:
+1. Sample PA9 and record candidate transitions with HAL_GetTick.
+2. After 20 ms stable, toggle PC13 once on the press event.
+Code Base: Embedded C using STM32 HAL (STM32CubeMX)
+* HAL_GPIO_ReadPin samples PA9.
+* HAL_GetTick measures debounce time.
+* HAL_GPIO_TogglePin changes PC13 once per accepted press.
 
-Source code: `Core/Src/main.c`
-
-## INFERENCE
-Implemented short-press and long-press detection using STM32 GPIO and software debouncing. The LED responds differently depending on the duration of the button press.
+3. Inference
+The program samples PA9 and waits for a stable 20 ms state before accepting a press. A valid press toggles PC13 once. The experiment demonstrates GPIO input, output and time-based switch handling.

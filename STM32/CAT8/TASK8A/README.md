@@ -1,36 +1,27 @@
-# TASK 8A — GPIO Input/Output
+EXPERIMENT DETAILS
+EXP: CONTINUOUS ASSESMENT 8
+DATE: 18/09/2026
+NAME OF EXP: STM32 GPIO Bring-Up and Switch-Controlled LED
+HARDWARE SETUP / PLATFORM: custom board + STM32F103C(8-B)Tx + PA9 input pull-up; PC13 LED output + STM32CubeMX (MDK-ARM project)
+TASK 8A : GPIO Input/Output
 
-## EXP
-CAT8
-
-## DATE
-18/09/2026
-
-## NAME OF EXP
-STM32 GPIO Bring-Up and Switch-Controlled LED
-
-## HARDWARE SETUP / PLATFORM
-- STM32 Blue Pill (STM32F103C8T6)
-- Onboard LED: PC13
-- Push-button input: PA0
-- System clock: 72 MHz
-
-## TASK NO
-Task 8A — GPIO Input/Output
-
-## Circuit Diagram
+1. Circuit Diagram
+The diagram shows the task pins, clock source and required external connections.
+* Microcontroller / Board: STM32F103C8Tx board (board name not recorded); MCU STM32F103C(8-B)Tx.
+* GPIO / Peripheral pins: PA9 input pull-up; PC13 LED output.
+* Clock: HSE through PLL, 72 MHz SYSCLK.
+* External components: LED and series resistor on PC13, plus a push button on PA9 with internal pull-up.
+* Power Supply: 3.3 V logic supply and common GND.
 ![Circuit Diagram](circuit.png)
 
-## Core Logic / Pseudocode / Code Base
+2. Core Logic / Pseudocode / Code Base
+Working Principle: The program reads PA9 continuously and writes the corresponding active-low state to the PC13 LED. The input uses the pull-up configured in the .ioc.
+Pseudocode:
+1. Read PA9 continuously.
+2. Drive PC13 low while the switch is pressed and high when released.
+Code Base: Embedded C using STM32 HAL (STM32CubeMX)
+* HAL_GPIO_ReadPin reads PA9.
+* HAL_GPIO_WritePin drives PC13.
 
-1. Configure PA0 as GPIO input with pull-up.
-2. Configure PC13 as GPIO output.
-3. Continuously read the push-button input.
-4. When PA0 is LOW, set PC13 LOW to turn ON the onboard LED.
-5. When PA0 is HIGH, set PC13 HIGH to turn OFF the onboard LED.
-
-### Code Base
-See `Src/main.c`.
-
-## INFERENCE
-The STM32 GPIO input and output functionality was implemented. The push-button input controls the onboard LED through GPIO polling. The project compiled successfully in Keil MDK-ARM.
+3. Inference
+The program reads PA9 continuously and writes the corresponding active-low state to the PC13 LED. The input uses the pull-up configured in the .ioc. The experiment demonstrates GPIO input, output and time-based switch handling.
