@@ -1,0 +1,21 @@
+--cpu Cortex-M3
+"task8a_gpio_input_output\startup_stm32f103xb.o"
+"task8a_gpio_input_output\main.o"
+"task8a_gpio_input_output\stm32f1xx_it.o"
+"task8a_gpio_input_output\stm32f1xx_hal_msp.o"
+"task8a_gpio_input_output\stm32f1xx_hal_gpio_ex.o"
+"task8a_gpio_input_output\stm32f1xx_hal.o"
+"task8a_gpio_input_output\stm32f1xx_hal_rcc.o"
+"task8a_gpio_input_output\stm32f1xx_hal_rcc_ex.o"
+"task8a_gpio_input_output\stm32f1xx_hal_gpio.o"
+"task8a_gpio_input_output\stm32f1xx_hal_dma.o"
+"task8a_gpio_input_output\stm32f1xx_hal_cortex.o"
+"task8a_gpio_input_output\stm32f1xx_hal_pwr.o"
+"task8a_gpio_input_output\stm32f1xx_hal_flash.o"
+"task8a_gpio_input_output\stm32f1xx_hal_flash_ex.o"
+"task8a_gpio_input_output\stm32f1xx_hal_exti.o"
+"task8a_gpio_input_output\system_stm32f1xx.o"
+--strict --scatter "TASK8A_GPIO_Input_Output\TASK8A_GPIO_Input_Output.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "TASK8A_GPIO_Input_Output.map" -o TASK8A_GPIO_Input_Output\TASK8A_GPIO_Input_Output.axf

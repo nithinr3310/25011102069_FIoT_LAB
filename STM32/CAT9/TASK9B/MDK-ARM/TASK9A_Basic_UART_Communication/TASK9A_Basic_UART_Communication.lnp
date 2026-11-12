@@ -1,0 +1,22 @@
+--cpu Cortex-M3
+"task9a_basic_uart_communication\startup_stm32f103xb.o"
+"task9a_basic_uart_communication\main.o"
+"task9a_basic_uart_communication\stm32f1xx_it.o"
+"task9a_basic_uart_communication\stm32f1xx_hal_msp.o"
+"task9a_basic_uart_communication\stm32f1xx_hal_gpio_ex.o"
+"task9a_basic_uart_communication\stm32f1xx_hal_uart.o"
+"task9a_basic_uart_communication\stm32f1xx_hal.o"
+"task9a_basic_uart_communication\stm32f1xx_hal_rcc.o"
+"task9a_basic_uart_communication\stm32f1xx_hal_rcc_ex.o"
+"task9a_basic_uart_communication\stm32f1xx_hal_gpio.o"
+"task9a_basic_uart_communication\stm32f1xx_hal_dma.o"
+"task9a_basic_uart_communication\stm32f1xx_hal_cortex.o"
+"task9a_basic_uart_communication\stm32f1xx_hal_pwr.o"
+"task9a_basic_uart_communication\stm32f1xx_hal_flash.o"
+"task9a_basic_uart_communication\stm32f1xx_hal_flash_ex.o"
+"task9a_basic_uart_communication\stm32f1xx_hal_exti.o"
+"task9a_basic_uart_communication\system_stm32f1xx.o"
+--strict --scatter "TASK9A_Basic_UART_Communication\TASK9A_Basic_UART_Communication.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "TASK9A_Basic_UART_Communication.map" -o TASK9A_Basic_UART_Communication\TASK9A_Basic_UART_Communication.axf

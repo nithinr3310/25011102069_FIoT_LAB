@@ -1,0 +1,28 @@
+--cpu=Cortex-M4.fp.sp
+"cat13-mqtt\startup_stm32f401xe.o"
+"cat13-mqtt\esplib.o"
+"cat13-mqtt\bme280.o"
+"cat13-mqtt\main.o"
+"cat13-mqtt\stm32f4xx_it.o"
+"cat13-mqtt\stm32f4xx_hal_msp.o"
+"cat13-mqtt\stm32f4xx_hal_i2c.o"
+"cat13-mqtt\stm32f4xx_hal_i2c_ex.o"
+"cat13-mqtt\stm32f4xx_hal_rcc.o"
+"cat13-mqtt\stm32f4xx_hal_rcc_ex.o"
+"cat13-mqtt\stm32f4xx_hal_flash.o"
+"cat13-mqtt\stm32f4xx_hal_flash_ex.o"
+"cat13-mqtt\stm32f4xx_hal_flash_ramfunc.o"
+"cat13-mqtt\stm32f4xx_hal_gpio.o"
+"cat13-mqtt\stm32f4xx_hal_dma_ex.o"
+"cat13-mqtt\stm32f4xx_hal_dma.o"
+"cat13-mqtt\stm32f4xx_hal_pwr.o"
+"cat13-mqtt\stm32f4xx_hal_pwr_ex.o"
+"cat13-mqtt\stm32f4xx_hal_cortex.o"
+"cat13-mqtt\stm32f4xx_hal.o"
+"cat13-mqtt\stm32f4xx_hal_exti.o"
+"cat13-mqtt\stm32f4xx_hal_uart.o"
+"cat13-mqtt\system_stm32f4xx.o"
+--strict --scatter "cat13-mqtt\cat13-mqtt.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "cat13-mqtt.map" -o cat13-mqtt\cat13-mqtt.axf

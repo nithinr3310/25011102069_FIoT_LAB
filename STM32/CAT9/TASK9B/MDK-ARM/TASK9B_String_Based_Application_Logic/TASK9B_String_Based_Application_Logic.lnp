@@ -1,0 +1,22 @@
+--cpu Cortex-M3
+"task9b_string_based_application_logic\startup_stm32f103xb.o"
+"task9b_string_based_application_logic\main.o"
+"task9b_string_based_application_logic\stm32f1xx_it.o"
+"task9b_string_based_application_logic\stm32f1xx_hal_msp.o"
+"task9b_string_based_application_logic\stm32f1xx_hal_gpio_ex.o"
+"task9b_string_based_application_logic\stm32f1xx_hal_uart.o"
+"task9b_string_based_application_logic\stm32f1xx_hal.o"
+"task9b_string_based_application_logic\stm32f1xx_hal_rcc.o"
+"task9b_string_based_application_logic\stm32f1xx_hal_rcc_ex.o"
+"task9b_string_based_application_logic\stm32f1xx_hal_gpio.o"
+"task9b_string_based_application_logic\stm32f1xx_hal_dma.o"
+"task9b_string_based_application_logic\stm32f1xx_hal_cortex.o"
+"task9b_string_based_application_logic\stm32f1xx_hal_pwr.o"
+"task9b_string_based_application_logic\stm32f1xx_hal_flash.o"
+"task9b_string_based_application_logic\stm32f1xx_hal_flash_ex.o"
+"task9b_string_based_application_logic\stm32f1xx_hal_exti.o"
+"task9b_string_based_application_logic\system_stm32f1xx.o"
+--strict --scatter "TASK9B_String_Based_Application_Logic\TASK9B_String_Based_Application_Logic.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "TASK9B_String_Based_Application_Logic.map" -o TASK9B_String_Based_Application_Logic\TASK9B_String_Based_Application_Logic.axf

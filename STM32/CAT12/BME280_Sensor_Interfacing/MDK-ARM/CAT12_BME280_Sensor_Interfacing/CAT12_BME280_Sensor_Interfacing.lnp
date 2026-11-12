@@ -1,0 +1,27 @@
+--cpu=Cortex-M4.fp.sp
+"cat12_bme280_sensor_interfacing\startup_stm32f401xe.o"
+"cat12_bme280_sensor_interfacing\main.o"
+"cat12_bme280_sensor_interfacing\stm32f4xx_it.o"
+"cat12_bme280_sensor_interfacing\stm32f4xx_hal_msp.o"
+"cat12_bme280_sensor_interfacing\bme280.o"
+"cat12_bme280_sensor_interfacing\stm32f4xx_hal_i2c.o"
+"cat12_bme280_sensor_interfacing\stm32f4xx_hal_i2c_ex.o"
+"cat12_bme280_sensor_interfacing\stm32f4xx_hal_rcc.o"
+"cat12_bme280_sensor_interfacing\stm32f4xx_hal_rcc_ex.o"
+"cat12_bme280_sensor_interfacing\stm32f4xx_hal_flash.o"
+"cat12_bme280_sensor_interfacing\stm32f4xx_hal_flash_ex.o"
+"cat12_bme280_sensor_interfacing\stm32f4xx_hal_flash_ramfunc.o"
+"cat12_bme280_sensor_interfacing\stm32f4xx_hal_gpio.o"
+"cat12_bme280_sensor_interfacing\stm32f4xx_hal_dma_ex.o"
+"cat12_bme280_sensor_interfacing\stm32f4xx_hal_dma.o"
+"cat12_bme280_sensor_interfacing\stm32f4xx_hal_pwr.o"
+"cat12_bme280_sensor_interfacing\stm32f4xx_hal_pwr_ex.o"
+"cat12_bme280_sensor_interfacing\stm32f4xx_hal_cortex.o"
+"cat12_bme280_sensor_interfacing\stm32f4xx_hal.o"
+"cat12_bme280_sensor_interfacing\stm32f4xx_hal_exti.o"
+"cat12_bme280_sensor_interfacing\stm32f4xx_hal_uart.o"
+"cat12_bme280_sensor_interfacing\system_stm32f4xx.o"
+--strict --scatter "CAT12_BME280_Sensor_Interfacing\CAT12_BME280_Sensor_Interfacing.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "CAT12_BME280_Sensor_Interfacing.map" -o CAT12_BME280_Sensor_Interfacing\CAT12_BME280_Sensor_Interfacing.axf

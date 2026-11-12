@@ -1,0 +1,23 @@
+--cpu=Cortex-M4.fp.sp
+"task11b_onboard_switch_control\startup_stm32f401xe.o"
+"task11b_onboard_switch_control\main.o"
+"task11b_onboard_switch_control\stm32f4xx_it.o"
+"task11b_onboard_switch_control\stm32f4xx_hal_msp.o"
+"task11b_onboard_switch_control\stm32f4xx_hal_rcc.o"
+"task11b_onboard_switch_control\stm32f4xx_hal_rcc_ex.o"
+"task11b_onboard_switch_control\stm32f4xx_hal_flash.o"
+"task11b_onboard_switch_control\stm32f4xx_hal_flash_ex.o"
+"task11b_onboard_switch_control\stm32f4xx_hal_flash_ramfunc.o"
+"task11b_onboard_switch_control\stm32f4xx_hal_gpio.o"
+"task11b_onboard_switch_control\stm32f4xx_hal_dma_ex.o"
+"task11b_onboard_switch_control\stm32f4xx_hal_dma.o"
+"task11b_onboard_switch_control\stm32f4xx_hal_pwr.o"
+"task11b_onboard_switch_control\stm32f4xx_hal_pwr_ex.o"
+"task11b_onboard_switch_control\stm32f4xx_hal_cortex.o"
+"task11b_onboard_switch_control\stm32f4xx_hal.o"
+"task11b_onboard_switch_control\stm32f4xx_hal_exti.o"
+"task11b_onboard_switch_control\system_stm32f4xx.o"
+--strict --scatter "TASK11B_Onboard_Switch_Control\TASK11B_Onboard_Switch_Control.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "TASK11B_Onboard_Switch_Control.map" -o TASK11B_Onboard_Switch_Control\TASK11B_Onboard_Switch_Control.axf

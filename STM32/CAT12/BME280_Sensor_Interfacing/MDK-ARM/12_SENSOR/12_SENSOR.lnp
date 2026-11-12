@@ -1,0 +1,26 @@
+--cpu=Cortex-M4.fp.sp
+"12_sensor\startup_stm32f401xe.o"
+"12_sensor\bme280.o"
+"12_sensor\main.o"
+"12_sensor\stm32f4xx_it.o"
+"12_sensor\stm32f4xx_hal_msp.o"
+"12_sensor\stm32f4xx_hal_i2c.o"
+"12_sensor\stm32f4xx_hal_i2c_ex.o"
+"12_sensor\stm32f4xx_hal_rcc.o"
+"12_sensor\stm32f4xx_hal_rcc_ex.o"
+"12_sensor\stm32f4xx_hal_flash.o"
+"12_sensor\stm32f4xx_hal_flash_ex.o"
+"12_sensor\stm32f4xx_hal_flash_ramfunc.o"
+"12_sensor\stm32f4xx_hal_gpio.o"
+"12_sensor\stm32f4xx_hal_dma_ex.o"
+"12_sensor\stm32f4xx_hal_dma.o"
+"12_sensor\stm32f4xx_hal_pwr.o"
+"12_sensor\stm32f4xx_hal_pwr_ex.o"
+"12_sensor\stm32f4xx_hal_cortex.o"
+"12_sensor\stm32f4xx_hal.o"
+"12_sensor\stm32f4xx_hal_exti.o"
+"12_sensor\system_stm32f4xx.o"
+--strict --scatter "12_SENSOR\12_SENSOR.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "12_SENSOR.map" -o 12_SENSOR\12_SENSOR.axf

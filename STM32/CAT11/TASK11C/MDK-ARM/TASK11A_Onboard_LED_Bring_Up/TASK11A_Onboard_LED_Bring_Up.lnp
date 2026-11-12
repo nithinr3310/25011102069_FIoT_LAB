@@ -1,0 +1,23 @@
+--cpu=Cortex-M4.fp.sp
+"task11a_onboard_led_bring_up\startup_stm32f401xe.o"
+"task11a_onboard_led_bring_up\main.o"
+"task11a_onboard_led_bring_up\stm32f4xx_it.o"
+"task11a_onboard_led_bring_up\stm32f4xx_hal_msp.o"
+"task11a_onboard_led_bring_up\stm32f4xx_hal_rcc.o"
+"task11a_onboard_led_bring_up\stm32f4xx_hal_rcc_ex.o"
+"task11a_onboard_led_bring_up\stm32f4xx_hal_flash.o"
+"task11a_onboard_led_bring_up\stm32f4xx_hal_flash_ex.o"
+"task11a_onboard_led_bring_up\stm32f4xx_hal_flash_ramfunc.o"
+"task11a_onboard_led_bring_up\stm32f4xx_hal_gpio.o"
+"task11a_onboard_led_bring_up\stm32f4xx_hal_dma_ex.o"
+"task11a_onboard_led_bring_up\stm32f4xx_hal_dma.o"
+"task11a_onboard_led_bring_up\stm32f4xx_hal_pwr.o"
+"task11a_onboard_led_bring_up\stm32f4xx_hal_pwr_ex.o"
+"task11a_onboard_led_bring_up\stm32f4xx_hal_cortex.o"
+"task11a_onboard_led_bring_up\stm32f4xx_hal.o"
+"task11a_onboard_led_bring_up\stm32f4xx_hal_exti.o"
+"task11a_onboard_led_bring_up\system_stm32f4xx.o"
+--strict --scatter "TASK11A_Onboard_LED_Bring_Up\TASK11A_Onboard_LED_Bring_Up.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "TASK11A_Onboard_LED_Bring_Up.map" -o TASK11A_Onboard_LED_Bring_Up\TASK11A_Onboard_LED_Bring_Up.axf

@@ -1,0 +1,23 @@
+--cpu=Cortex-M4.fp.sp
+"task11c_short_long_press_detection\startup_stm32f401xe.o"
+"task11c_short_long_press_detection\main.o"
+"task11c_short_long_press_detection\stm32f4xx_it.o"
+"task11c_short_long_press_detection\stm32f4xx_hal_msp.o"
+"task11c_short_long_press_detection\stm32f4xx_hal_rcc.o"
+"task11c_short_long_press_detection\stm32f4xx_hal_rcc_ex.o"
+"task11c_short_long_press_detection\stm32f4xx_hal_flash.o"
+"task11c_short_long_press_detection\stm32f4xx_hal_flash_ex.o"
+"task11c_short_long_press_detection\stm32f4xx_hal_flash_ramfunc.o"
+"task11c_short_long_press_detection\stm32f4xx_hal_gpio.o"
+"task11c_short_long_press_detection\stm32f4xx_hal_dma_ex.o"
+"task11c_short_long_press_detection\stm32f4xx_hal_dma.o"
+"task11c_short_long_press_detection\stm32f4xx_hal_pwr.o"
+"task11c_short_long_press_detection\stm32f4xx_hal_pwr_ex.o"
+"task11c_short_long_press_detection\stm32f4xx_hal_cortex.o"
+"task11c_short_long_press_detection\stm32f4xx_hal.o"
+"task11c_short_long_press_detection\stm32f4xx_hal_exti.o"
+"task11c_short_long_press_detection\system_stm32f4xx.o"
+--strict --scatter "TASK11C_Short_Long_Press_Detection\TASK11C_Short_Long_Press_Detection.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "TASK11C_Short_Long_Press_Detection.map" -o TASK11C_Short_Long_Press_Detection\TASK11C_Short_Long_Press_Detection.axf
