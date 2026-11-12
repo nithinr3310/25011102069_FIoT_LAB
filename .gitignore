@@ -1,30 +1,40 @@
-# Keil / ARM build outputs
-Objects/
-Listings/
-*.axf
-*.elf
-*.hex
-*.bin
-*.map
-*.lst
-*.o
-*.d
-*.crf
-*.dep
-*.lnp
-*.iex
-*.htm
-*.sct
 
-# Keil user-specific files
-*.uvguix.*
-*.uvgu*
-*.uvoptx
-*.bak
+# Keil generated listing files
+**/Listings/
 
-# Editor / OS files
-.vscode/
-.idea/
-.DS_Store
+# Keil generated object and build files
+**/Objects/*.obj
+**/Objects/*.lst
+**/Objects/*.m51
+**/Objects/*.abs
+**/Objects/*.omf
+**/Objects/*.lnp
+**/Objects/*.build_log.htm
+**/Objects/*.crf
+**/Objects/*.dep
+
+# User-specific Keil settings
+**/*.uvgui
+**/*.uvgui.*
+**/*.uvguix*
+**/*.uvopt
+**/*.uvoptx
+
+# Generated intermediate build files
+**/*.axf
+**/*.o
+**/*.d
+**/*.dep
+**/*.map
+**/*.elf
+
+# Generated build directories
+**/Debug/
+**/Release/
+
+# Operating system files
 Thumbs.db
-desktop.ini
+Desktop.ini
+.DS_Store
+
+# Keep .hex firmware files tracked
