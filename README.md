@@ -26,9 +26,11 @@ Firmware implementations, circuit diagrams, and documentation for the **Foundati
 | **CAT 8** | [`STM32/CAT8`](STM32/CAT8/README.md) | GPIO Input/Output, Debouncing & Short/Long Press Detection | STM32F103C8Tx |
 | **CAT 9** | [`STM32/CAT9`](STM32/CAT9/TASK9A/README.md) | USART Serial Communication & Command String Parser | STM32F103C8Tx |
 | **CAT 10** | [`STM32/CAT10`](STM32/CAT10/README.md) | STM32 to ESP8266 (Wemos) UART Bridge & AT Command Interface | STM32F103C8Tx |
-| **CAT 11** | [`STM32/CAT11`](STM32/CAT11/TASK11A/README.md) | Nucleo On-Board LED Bring-Up, Button Debouncing & Short/Long Press Detection | STM32F401RE |
-| **CAT 12** | [`STM32/CAT12/TASK12`](STM32/CAT12/TASK12/README.md) | BME280 Sensor Interfacing via I²C with Bosch Sensor API | STM32F401RE |
-| **CAT 13** | [`STM32/CAT13/TASK13`](STM32/CAT13/TASK13/README.md) | IoT Cloud Node: BME280 Sensor + ESP8266 Wi-Fi + MQTT to Node-RED | STM32F401RE |
+| **CAT 11** | [`STM32/CAT11`](STM32/CAT11/README.md) | Wi-Fi Station Mode & Embedded TCP / HTTP Web Server | STM32F103C8Tx / STM32F410RBTx |
+| **CAT 12** | [`STM32/CAT12`](STM32/CAT12/README.md) | Nucleo On-Board LED Bring-Up, Button Debouncing & Short/Long Press Detection | STM32F401RE |
+| **CAT 13** | [`STM32/CAT13/TASK13`](STM32/CAT13/TASK13/README.md) | BME280 Sensor Interfacing via I²C with Bosch Sensor API | STM32F401RE |
+| **CAT 14** | [`STM32/CAT14/TASK14`](STM32/CAT14/TASK14/README.md) | IoT Cloud Node: BME280 Sensor + ESP8266 Wi-Fi + MQTT to Node-RED | STM32F401RE |
+| **CAT 15** | [`STM32/CAT15`](STM32/CAT15/README.md) | Environmental IoT Node & MQTT Telemetry (Personal Final Project) | STM32F401RE |
 
 ---
 
@@ -42,7 +44,7 @@ Foundations_of_IoT/
 │   ├── CAT4/TASK4A/       # 7-Segment Display & Matrix Keypad Multiplexing
 │   ├── CAT5/              # Hardware Timer 0 & Waveforms
 │   │   ├── TASK5A/        # Software PWM LED Fading
-│   │   ├── TASK5B/        # Variable-Frequency Square-Wave Generation
+│   │   ├── TASK5B/        # Square-Wave Generation (5B.1 Freq, 5B.2 Duty, 5B.3 Pulse)
 │   │   └── TASK5C/        # Stepper Motor Periodic Sequence Control
 │   ├── CAT6/              # UART Serial Communication (9600 Baud)
 │   │   ├── TASK6A/        # Periodic String Transmission
@@ -63,12 +65,16 @@ Foundations_of_IoT/
 │   ├── CAT10/             # ESP8266 Wi-Fi Modem AT Commands (STM32F103C8Tx)
 │   │   ├── TASK10A/       # STM32 to ESP8266 UART Bridge (AT Ping)
 │   │   └── TASK10B/       # AT Interface Command Sequencing & Response Relay
-│   ├── CAT11/             # Nucleo GPIO & User Input (STM32F401RE)
-│   │   ├── TASK11A/       # On-Board LED (LD2) Bring-Up
-│   │   ├── TASK11B/       # On-Board Switch (B1) Debouncing & State Retention
-│   │   └── TASK11C/       # Short-Press vs Long-Press Blink Mode Switching
-│   ├── CAT12/TASK12/      # BME280 Environmental Sensor Interfacing (I²C + Bosch API)
-│   └── CAT13/TASK13/      # IoT Cloud Telemetry (BME280 + ESP8266 + MQTT to Node-RED)
+│   ├── CAT11/             # ESP8266 Network & Server (STM32F103C8 / STM32F410RB)
+│   │   ├── TASK11A/       # Embedded TCP HTTP Web Server (Port 80)
+│   │   └── TASK11B/       # Wi-Fi Station Join & IP Configuration
+│   ├── CAT12/             # Nucleo GPIO & User Input (STM32F401RE)
+│   │   ├── TASK12A/       # On-Board LED (LD2) Bring-Up
+│   │   ├── TASK12B/       # On-Board Switch (B1) Debouncing & State Retention
+│   │   └── TASK12C/       # Short-Press vs Long-Press Blink Mode Switching
+│   ├── CAT13/TASK13/      # BME280 Environmental Sensor Interfacing (I²C + Bosch API)
+│   ├── CAT14/TASK14/      # IoT Cloud Telemetry (BME280 + ESP8266 + MQTT to Node-RED)
+│   └── CAT15/TASK15/      # End-to-End Environmental IoT Node (Personal Final Project)
 │
 └── README.md
 ```
@@ -83,9 +89,9 @@ Each task folder contains:
 ## 🛠 Tools & Technologies
 
 - **8051 Platform:** Keil µVision C51, AT89S52 Microcontroller
-- **STM32 Platform:** Keil MDK-ARM, STM32CubeMX, STM32 HAL Drivers, STM32F103C8Tx (Blue Pill), STM32F401RE (Nucleo)
+- **STM32 Platform:** Keil MDK-ARM, STM32CubeMX, STM32 HAL Drivers, STM32F103C8Tx (Blue Pill), STM32F401RE (Nucleo), STM32F410RBTx
 - **Peripherals & Sensors:** BME280 (Temperature, Humidity, Pressure), ESP8266 (Wi-Fi Modem), 16×2 LCD (HD44780), 4×4 Matrix Keypad, 7-Segment Display, Stepper Motor
-- **Protocols & Cloud:** I²C, UART, MQTT, Node-RED
+- **Protocols & Cloud:** I²C, UART, MQTT, HTTP, Node-RED
 
 ---
 
