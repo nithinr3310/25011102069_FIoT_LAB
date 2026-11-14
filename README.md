@@ -8,14 +8,14 @@ Firmware implementations, circuit diagrams, and documentation for the **Foundati
 
 ### Platform: 8051 (AT89S52)
 
-| Assessment | Directory | Topic / Focus |
-|---|---|---|
-| **CAT 2** | `8051/CAT2/TASK2B` | Basic LED Blinking & GPIO Bring-Up |
-| **CAT 3** | `8051/CAT3/TASK3A` | Pushbutton-Controlled Multi-Mode LED Sequencing |
-| **CAT 4** | `8051/CAT4/TASK4A` | 7-Segment Display & Matrix Multiplexing |
-| **CAT 5** | `8051/CAT5/` | Hardware Timer 0 (1 ms base), Waveform Generation & Software PWM |
-| **CAT 6** | `8051/CAT6/TASK6A-B` | UART Serial Initialization & Character Echo (9600 Baud) |
-| **CAT 7** | `8051/CAT7/TASK7A-C` | 4×4 Matrix Keypad Scanning & 16×2 LCD Interfacing |
+| Assessment | Directory | Topic / Focus | Target MCU |
+|---|---|---|---|
+| **CAT 2** | [`8051/CAT2/TASK2B`](8051/CAT2/TASK2B/README.md) | Basic LED Blinking & GPIO Bring-Up | AT89S52 |
+| **CAT 3** | [`8051/CAT3/TASK3A`](8051/CAT3/TASK3A/README.md) | Pushbutton-Controlled Multi-Mode LED Sequencing | AT89S52 |
+| **CAT 4** | [`8051/CAT4/TASK4A`](8051/CAT4/TASK4A/README.md) | 7-Segment Display & Matrix Multiplexing | AT89S52 |
+| **CAT 5** | [`8051/CAT5`](8051/CAT5/README.md) | Hardware Timer 0, Software PWM Fading & Stepper Sequence | AT89S52 |
+| **CAT 6** | [`8051/CAT6`](8051/CAT6/README.md) | UART Serial Initialization & Character Echo (9600 Baud) | AT89S52 |
+| **CAT 7** | [`8051/CAT7`](8051/CAT7/README.md) | 4×4 Matrix Keypad Scanning & 16×2 LCD Interfacing | AT89S52 |
 
 ---
 
@@ -23,12 +23,12 @@ Firmware implementations, circuit diagrams, and documentation for the **Foundati
 
 | Assessment | Directory | Topic / Focus | Target MCU |
 |---|---|---|---|
-| **CAT 8** | `STM32/CAT8/TASK8A-C` | GPIO Input/Output, Debouncing & Short/Long Press Detection | STM32F103C8Tx |
-| **CAT 9** | `STM32/CAT9/TASK9A-B` | USART Serial Communication & Command String Parser | STM32F103C8Tx |
-| **CAT 10** | `STM32/CAT10/TASK10A-C` | STM32 to ESP8266 (Wemos) UART Bridge, AT Commands & Wi-Fi Station Mode | STM32F103C8Tx |
-| **CAT 11** | `STM32/CAT11/TASK11A-B` | Nucleo On-Board LED Bring-Up & EXTI Pushbutton Interrupts | STM32F401RE |
-| **CAT 12** | `STM32/CAT12/TASK12` | BME280 Sensor Interfacing via I²C with Bosch Sensor API | STM32F401RE |
-| **CAT 13** | `STM32/CAT13/TASK13` | IoT Cloud Node: BME280 Sensor + ESP8266 Wi-Fi + MQTT to Node-RED | STM32F401RE |
+| **CAT 8** | [`STM32/CAT8`](STM32/CAT8/README.md) | GPIO Input/Output, Debouncing & Short/Long Press Detection | STM32F103C8Tx |
+| **CAT 9** | [`STM32/CAT9`](STM32/CAT9/TASK9A/README.md) | USART Serial Communication & Command String Parser | STM32F103C8Tx |
+| **CAT 10** | [`STM32/CAT10`](STM32/CAT10/README.md) | STM32 to ESP8266 (Wemos) UART Bridge & AT Command Interface | STM32F103C8Tx |
+| **CAT 11** | [`STM32/CAT11`](STM32/CAT11/TASK11A/README.md) | Nucleo On-Board LED Bring-Up, Button Debouncing & Short/Long Press Detection | STM32F401RE |
+| **CAT 12** | [`STM32/CAT12/TASK12`](STM32/CAT12/TASK12/README.md) | BME280 Sensor Interfacing via I²C with Bosch Sensor API | STM32F401RE |
+| **CAT 13** | [`STM32/CAT13/TASK13`](STM32/CAT13/TASK13/README.md) | IoT Cloud Node: BME280 Sensor + ESP8266 Wi-Fi + MQTT to Node-RED | STM32F401RE |
 
 ---
 
@@ -37,37 +37,55 @@ Firmware implementations, circuit diagrams, and documentation for the **Foundati
 ```text
 Foundations_of_IoT/
 ├── 8051/
-│   ├── CAT2/TASK2B/       # LED Blinking
-│   ├── CAT3/TASK3A/       # LED Modes & Switch
-│   ├── CAT4/TASK4A/       # 7-Segment Display
-│   ├── CAT5/              # Timers & PWM
-│   ├── CAT6/TASK6A, 6B/   # UART Serial
-│   └── CAT7/TASK7A-C/     # 4x4 Keypad & 16x2 LCD
+│   ├── CAT2/TASK2B/       # Basic LED Blinking & GPIO Bring-Up
+│   ├── CAT3/TASK3A/       # Multi-Mode LED Sequencing & Push-Button Control
+│   ├── CAT4/TASK4A/       # 7-Segment Display & Matrix Keypad Multiplexing
+│   ├── CAT5/              # Hardware Timer 0 & Waveforms
+│   │   ├── TASK5A/        # Software PWM LED Fading
+│   │   ├── TASK5B/        # Variable-Frequency Square-Wave Generation
+│   │   └── TASK5C/        # Stepper Motor Periodic Sequence Control
+│   ├── CAT6/              # UART Serial Communication (9600 Baud)
+│   │   ├── TASK6A/        # Periodic String Transmission
+│   │   └── TASK6B/        # Character Echo over Terminal
+│   └── CAT7/              # 16x2 LCD Driver & 4x4 Matrix Keypad
+│       ├── TASK7A/        # 4-bit Mode LCD Initialization & String Display
+│       ├── TASK7B/        # Cursor Positioning & Real-Time Counter Display
+│       └── TASK7C/        # Interactive Keypad-Driven Character Movement
 │
 ├── STM32/
-│   ├── CAT8/TASK8A-C/     # GPIO & Button Events
-│   ├── CAT9/TASK9A-B/     # USART & Command Logic
-│   ├── CAT10/TASK10A-C/   # ESP8266 Wi-Fi & AT Commands
-│   ├── CAT11/TASK11A-B/   # Nucleo Onboard GPIO & EXTI
-│   ├── CAT12/TASK12/      # BME280 I2C Sensor
-│   └── CAT13/TASK13/      # BME280 + MQTT Cloud Telemetry
+│   ├── CAT8/              # GPIO Input/Output & Debouncing (STM32F103C8Tx)
+│   │   ├── TASK8A/        # Continuous GPIO Read & LED Drive
+│   │   ├── TASK8B/        # Debounced Event-Based Toggle
+│   │   └── TASK8C/        # Short-Press vs Long-Press Blinking Control
+│   ├── CAT9/              # USART Serial Communication (STM32F103C8Tx)
+│   │   ├── TASK9A/        # Full-Duplex Character Reception & Terminal Echo
+│   │   └── TASK9B/        # Command String Parser (LED ON, LED OFF, LED TOGGLE)
+│   ├── CAT10/             # ESP8266 Wi-Fi Modem AT Commands (STM32F103C8Tx)
+│   │   ├── TASK10A/       # STM32 to ESP8266 UART Bridge (AT Ping)
+│   │   └── TASK10B/       # AT Interface Command Sequencing & Response Relay
+│   ├── CAT11/             # Nucleo GPIO & User Input (STM32F401RE)
+│   │   ├── TASK11A/       # On-Board LED (LD2) Bring-Up
+│   │   ├── TASK11B/       # On-Board Switch (B1) Debouncing & State Retention
+│   │   └── TASK11C/       # Short-Press vs Long-Press Blink Mode Switching
+│   ├── CAT12/TASK12/      # BME280 Environmental Sensor Interfacing (I²C + Bosch API)
+│   └── CAT13/TASK13/      # IoT Cloud Telemetry (BME280 + ESP8266 + MQTT to Node-RED)
 │
 └── README.md
 ```
 
 Each task folder contains:
-- `README.md` — Experiment objectives, pinouts, and logic explanation.
-- `circuit.png` — Circuit connection schematic.
-- Source code, project configuration files, and compiled binaries.
+- `README.md` — Experiment objectives, hardware connections, logic explanation, and inference.
+- `circuit.png` — Hardware schematic / circuit diagram.
+- Firmware source code, Keil/CubeMX project configuration files, and compiled binaries.
 
 ---
 
-## 🛠 Tools Used
+## 🛠 Tools & Technologies
 
-- **8051:** Keil µVision C51
-- **STM32:** Keil MDK-ARM, STM32CubeMX, STM32 HAL Drivers
-- **Hardware:** AT89S52, STM32F103C8Tx (Blue Pill), STM32F401RE (Nucleo), BME280, ESP8266
-- **IoT & Network:** MQTT, Node-RED
+- **8051 Platform:** Keil µVision C51, AT89S52 Microcontroller
+- **STM32 Platform:** Keil MDK-ARM, STM32CubeMX, STM32 HAL Drivers, STM32F103C8Tx (Blue Pill), STM32F401RE (Nucleo)
+- **Peripherals & Sensors:** BME280 (Temperature, Humidity, Pressure), ESP8266 (Wi-Fi Modem), 16×2 LCD (HD44780), 4×4 Matrix Keypad, 7-Segment Display, Stepper Motor
+- **Protocols & Cloud:** I²C, UART, MQTT, Node-RED
 
 ---
 
