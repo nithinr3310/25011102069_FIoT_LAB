@@ -1,9 +1,9 @@
 EXPERIMENT DETAILS
-EXP: Continuous Lab Evaluation-5
+EXP: CONTINUOUS ASSESMENT 5
 DATE: 10/08/2026
 NAME OF EXP: Hardware Timer and Interrupt-Based Timing for LED Fading, Pulse Generation, and Stepper Motor Control
 HARDWARE SETUP / PLATFORM: AT89S52 8051 development board + Keil C51
-TASK 3 : Stepper-motor speed and direction control. (*)
+TASK 5C : Stepper-motor speed and direction control. (*)
 
 1. Circuit Diagram
 
