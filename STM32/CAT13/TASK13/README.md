@@ -1,121 +1,93 @@
-# CAT13 – BME280 Sensor Interfacing Using I²C and MQTT
+# CAT12 – BME280 Sensor Interfacing Using I²C and Bosch Sensor API
 
-## EXP
-CAT13
-
-## DATE
-28/10/2026
-
-## NAME OF EXP
-BME280 Sensor Interfacing Using I²C and MQTT using Custom Built ESP8266 API
-
-## HARDWARE SETUP / PLATFORM
-- STM32 NUCLEO-F401RE
-- BME280 Temperature, Pressure and Humidity Sensor
-- ESP8266 Wi-Fi Module
-- Keil µVision IDE
-- ARMCLANG Compiler V6.24
-- STM32 HAL Drivers
-- Node-RED
-- MQTT Protocol
-
-## TASK NO
-CAT13
-
-## OBJECTIVE
-To interface the BME280 environmental sensor with the STM32 microcontroller using the I²C communication protocol and transmit the sensor readings to an MQTT broker through an ESP8266 Wi-Fi module using a custom-built ESP8266 API.
-
-## CIRCUIT DIAGRAM
-See `circuit.png` in this directory.
-
-## HARDWARE CONNECTIONS
-
-| Component | STM32 Pin | Function |
-|---|---|---|
-| BME280 SDA | PB6 | I²C1 SDA |
-| BME280 SCL | PB7 | I²C1 SCL |
-| ESP8266 TX | PA3 | USART2 RX |
-| ESP8266 RX | PA2 | USART2 TX |
-| BME280 VCC | 3.3V | Power |
-| ESP8266 VCC | 3.3V | Power |
-| Common GND | GND | Ground |
-
-## SOFTWARE IMPLEMENTATION
-
-1. Initialize the I²C peripheral to communicate with the BME280 sensor.
-2. Configure the BME280 using the Bosch sensor API.
-3. Read compensated temperature, pressure and humidity measurements.
-4. Initialize the ESP8266 using the custom `ESPLib.c` and `ESPLib.h` library.
-5. Configure the ESP8266 in Station Mode and connect it to a Wi-Fi network.
-6. Establish an MQTT connection with the broker.
-7. Convert the sensor measurements into a JSON payload.
-8. Publish the sensor data periodically to the configured MQTT topic.
-
-## MQTT CONFIGURATION
-
-| Parameter | Configuration |
+| Field | Details |
 |---|---|
-| Broker | broker.emqx.io |
-| Port | 1883 |
-| Protocol | MQTT |
-| Client ID | STM32_BME280 |
-| Topic | stm32/test/data |
-| QoS | 0 |
-| Keep Alive | 500 seconds |
-| Clean Session | Enabled |
+| **EXP** | CAT12 |
+| **DATE** |23/10/2026 |
+| **NAME OF EXP** | BME280 Sensor Interfacing Using I²C and Bosch Sensor API |
+| **HARDWARE SETUP / PLATFORM** | STM32 Nucleo-F401RE, BME280 sensor module, Keil µVision, STM32 HAL, Bosch BME280 Sensor API |
+| **TASK NO** | CAT12 |
 
-### Sample JSON Payload
+## Circuit Diagram
 
-```json
-{
-  "status": "success",
-  "temperature": 28.45,
-  "humidity": 62.30,
-  "pressure": 1008.72
-}
+![Circuit Diagram](circuit.png)
+
+### Pin Connections
+
+| BME280 | STM32 Nucleo-F401RE | Description |
+|---|---|---|
+| VCC / VIN | 3.3 V | Power supply |
+| GND | GND | Common ground |
+| SCL | PB6 | I²C1 clock |
+| SDA | PB7 | I²C1 data |
+| CSB | 3.3 V | Selects I²C interface |
+| SDO | GND | Selects I²C address 0x76 |
+
+**UART connections used for serial output:**
+
+| STM32 pin | Connection |
+|---|---|
+| PA9 (USART1_TX) | USB-to-UART adapter RX |
+| PA10 (USART1_RX) | USB-to-UART adapter TX |
+| GND | Adapter GND |
+
+Use a 3.3 V-compatible USB-to-UART adapter. On the usual Nucleo-F401RE configuration, the ST-LINK virtual COM port is not automatically connected to USART1 PA9/PA10.
+
+## Core Logic / Pseudocode / Code Base
+
+### Core Logic
+
+1. Initialize the STM32 HAL library.
+2. Configure the system clock.
+3. Initialize GPIO, I²C1, and USART1 peripherals.
+4. Configure the Bosch BME280 driver interface with I²C read, write, and delay callback functions.
+5. Initialize the BME280 sensor. First check I²C address `0x76`; if initialization fails, try `0x77`.
+6. Configure temperature, pressure, and humidity oversampling to **×1**.
+7. Disable the IIR filter.
+8. Set the sensor to **normal mode**.
+9. Read compensated temperature, pressure, and humidity measurements.
+10. Transmit the readings through USART1 at 115200 baud.
+11. Repeat the sensor-reading operation every one second.
+
+### Code Base
+
+The Keil project retains its original STM32 project structure. The main application logic is implemented in:
+
+- `Core/Src/main.c` – HAL initialization, I²C callbacks, BME280 configuration, sensor readings, and UART transmission.
+- `Core/Inc/main.h` – main application declarations and HAL header.
+- `Core/Src/stm32f4xx_hal_msp.c` – low-level peripheral clock and GPIO initialization.
+- `bme280.c` – Bosch BME280 sensor driver implementation.
+- `bme280.h` – Bosch BME280 driver interface.
+- `bme280_defs.h` – Bosch BME280 definitions.
+
+The BME280 driver communicates through I²C using the STM32 HAL memory read and memory write functions. The Bosch driver performs sensor compensation and provides the temperature, pressure, and humidity values.
+
+**Important:** Keep `HAL_MspInit()`, `HAL_I2C_MspInit()`, and `HAL_UART_MspInit()` in `stm32f4xx_hal_msp.c`. Do not define duplicate MSP functions in `main.c`.
+
+### Sensor Data and Output
+
+The Bosch integer compensation API represents:
+- Temperature in 0.01 °C.
+- Pressure in Q24.8 Pa.
+- Humidity in Q22.10 %RH.
+
+The application converts these values for readable UART output and displays:
+- Temperature in °C.
+- Pressure in Pa.
+- Relative humidity in %RH.
+
+Example serial output (illustrative values):
+
+```text
+CAT12 BME280 SENSOR INTERFACING
+Initializing sensor...
+BME280 initialized successfully!
+
+Temperature: 29.45 C | Pressure: 100850 Pa | Humidity: 65.22 %RH
 ```
 
-## NODE-RED IMPLEMENTATION
-
-- Configure an MQTT input node to subscribe to `stm32/test/data`.
-- Use a JSON node to parse the incoming MQTT payload.
-- Display temperature, humidity and pressure using dashboard widgets.
-- Monitor the incoming sensor measurements through the Node-RED dashboard.
+Actual readings depend on the surrounding environmental conditions and the sensor module.
 
 ## INFERENCE
 
-The experiment implements I²C-based BME280 sensor interfacing with an STM32 microcontroller and MQTT-based wireless data transmission using an ESP8266 module. The custom ESP8266 API provides Wi-Fi and MQTT communication functionality, while Node-RED can be used to visualize the published environmental measurements.
-
-## BUILD AND VERIFICATION
-
-- IDE: Keil µVision
-- Compiler: ARMCLANG V6.24
-- Build output: 0 errors and 0 warnings (reported build; application functionality requires hardware verification).
-
-**Note:** Physical sensor readings, Wi-Fi connectivity and MQTT message delivery were not hardware-tested.
-
-## REPOSITORY STRUCTURE
-
-```text
-CAT13/
-│
-├── Core/
-│   ├── Inc/
-│   │   ├── main.h
-│   │   ├── bme280.h
-│   │   ├── bme280_defs.h
-│   │   └── ESPLib.h
-│   │
-│   └── Src/
-│       ├── main.c
-│       ├── bme280.c
-│       ├── ESPLib.c
-│       ├── stm32f4xx_it.c
-│       └── stm32f4xx_hal_msp.c
-│
-├── Drivers/
-├── circuit.png
-├── README.md
-├── cat13-mqtt.ioc
-└── cat13-mqtt.uvprojx
-```
+The BME280 sensor was interfaced with the STM32F401RE using the I²C communication protocol. The Bosch BME280 Sensor API was used to initialize and configure the sensor, acquire compensated temperature, pressure, and humidity measurements, and transmit the readings through USART1. This experiment demonstrates I²C-based sensor interfacing and serial data communication using STM32 HAL.

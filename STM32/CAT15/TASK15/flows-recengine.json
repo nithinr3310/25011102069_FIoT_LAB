@@ -1,0 +1,1228 @@
+[
+    {
+        "id": "c94e87d611337bd7",
+        "type": "tab",
+        "label": "BME280 SENSOR MONITORING",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "95edc235f27a8f80",
+        "type": "mqtt in",
+        "z": "c94e87d611337bd7",
+        "name": "",
+        "topic": "snu/iot/bme280",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "cd80d04c7825a06a",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 80,
+        "y": 360,
+        "wires": [
+            [
+                "7eb686f870cf7849"
+            ]
+        ]
+    },
+    {
+        "id": "7eb686f870cf7849",
+        "type": "function",
+        "z": "c94e87d611337bd7",
+        "name": "BME280 DATA PROCESSOR",
+        "func": "\n// Get incoming sensor data\nlet data = msg.payload;\n\n// Validate incoming readings\nif (!data ||\n    typeof data.temperature !== \"number\" ||\n    typeof data.pressure !== \"number\" ||\n    typeof data.humidity !== \"number\") {\n    node.warn(\"Invalid BME280 sensor data\");\n    return null;\n}\n\n// Extract readings\nlet temperature = data.temperature;\nlet pressure = data.pressure;\nlet humidity = data.humidity;\n\n// Generate basic recommendations\nlet recommendation = \"\";\n\nif (temperature >= 35) {\n    recommendation = \"High temperature detected\";\n}\nelse if (humidity >= 75) {\n    recommendation = \"High humidity detected\";\n}\nelse if (temperature <= 20) {\n    recommendation = \"Low temperature detected\";\n}\nelse {\n    recommendation = \"Environmental conditions are normal\";\n}\n\n// Prepare processed output\nmsg.payload = {\n    temperature: temperature,\n    pressure: pressure,\n    humidity: humidity,\n    recommendation: recommendation,\n    timestamp: new Date().toISOString()\n};\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 360,
+        "wires": [
+            [
+                "93a9d698891ec666",
+                "ae312e78703982d4",
+                "57fa17608fcb7857",
+                "ce28a4f83c7549b3",
+                "8fbc7f84a3810a56",
+                "d593dc746e6c69ef",
+                "e9904dd4d1bbc2f2",
+                "b70842048b6cab00",
+                "1a2e573093c136e6",
+                "63b3161766d570b7"
+            ]
+        ]
+    },
+    {
+        "id": "93a9d698891ec666",
+        "type": "debug",
+        "z": "c94e87d611337bd7",
+        "name": "PROCESSED SENSOR DATA",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 930,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "84ebf2f8b82d1631",
+        "type": "inject",
+        "z": "c94e87d611337bd7",
+        "d": true,
+        "name": "SIMULATE BME280",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{     \"temperature\": 29.5,     \"pressure\": 1008.25,     \"humidity\": 65.4 }",
+        "payloadType": "json",
+        "x": 120,
+        "y": 540,
+        "wires": [
+            [
+                "a0592d91ce63f98b"
+            ]
+        ]
+    },
+    {
+        "id": "0af7dc5ce764ccc4",
+        "type": "ui-gauge",
+        "z": "c94e87d611337bd7",
+        "name": "Temperature Gauge",
+        "group": "08f98fa12150f3ce",
+        "order": 13,
+        "value": "payload",
+        "valueType": "msg",
+        "width": 3,
+        "height": 3,
+        "gtype": "gauge-half",
+        "gstyle": "needle",
+        "title": "Temperature",
+        "alwaysShowTitle": false,
+        "floatingTitlePosition": "top-left",
+        "units": "°C",
+        "icon": "",
+        "prefix": "",
+        "suffix": "",
+        "segments": [
+            {
+                "from": "0",
+                "color": "#5cd65c",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "4",
+                "color": "#ffc800",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "7",
+                "color": "#ea5353",
+                "text": "",
+                "textType": "label"
+            }
+        ],
+        "min": 0,
+        "max": "50",
+        "sizeThickness": 16,
+        "sizeGap": 4,
+        "sizeKeyThickness": 8,
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 1240,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ae312e78703982d4",
+        "type": "function",
+        "z": "c94e87d611337bd7",
+        "name": "EXTRACT TEMPERATURE",
+        "func": "\nmsg.payload = msg.payload.temperature;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 920,
+        "y": 120,
+        "wires": [
+            [
+                "0af7dc5ce764ccc4"
+            ]
+        ]
+    },
+    {
+        "id": "57fa17608fcb7857",
+        "type": "function",
+        "z": "c94e87d611337bd7",
+        "name": "EXTRACT HUMIDITY",
+        "func": "msg.payload = msg.payload.humidity;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 900,
+        "y": 200,
+        "wires": [
+            [
+                "be8717155ce64d79"
+            ]
+        ]
+    },
+    {
+        "id": "ce28a4f83c7549b3",
+        "type": "function",
+        "z": "c94e87d611337bd7",
+        "name": "EXTRACT PRESSURE",
+        "func": "msg.payload = msg.payload.pressure;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 280,
+        "wires": [
+            [
+                "5bb18fa569376f5f"
+            ]
+        ]
+    },
+    {
+        "id": "be8717155ce64d79",
+        "type": "ui-gauge",
+        "z": "c94e87d611337bd7",
+        "name": "",
+        "group": "08f98fa12150f3ce",
+        "order": 11,
+        "value": "payload",
+        "valueType": "msg",
+        "width": 3,
+        "height": 3,
+        "gtype": "gauge-half",
+        "gstyle": "needle",
+        "title": "Humidity",
+        "alwaysShowTitle": false,
+        "floatingTitlePosition": "top-left",
+        "units": "%",
+        "icon": "",
+        "prefix": "",
+        "suffix": "",
+        "segments": [
+            {
+                "from": "0",
+                "color": "#5cd65c",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "4",
+                "color": "#ffc800",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "7",
+                "color": "#ea5353",
+                "text": "",
+                "textType": "label"
+            }
+        ],
+        "min": 0,
+        "max": "100",
+        "sizeThickness": 16,
+        "sizeGap": 4,
+        "sizeKeyThickness": 8,
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 1160,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5bb18fa569376f5f",
+        "type": "ui-gauge",
+        "z": "c94e87d611337bd7",
+        "name": "",
+        "group": "08f98fa12150f3ce",
+        "order": 12,
+        "value": "payload",
+        "valueType": "msg",
+        "width": 3,
+        "height": 3,
+        "gtype": "gauge-half",
+        "gstyle": "needle",
+        "title": "Atmospheric Pressure",
+        "alwaysShowTitle": false,
+        "floatingTitlePosition": "top-left",
+        "units": "hPA",
+        "icon": "",
+        "prefix": "",
+        "suffix": "",
+        "segments": [
+            {
+                "from": "0",
+                "color": "#5cd65c",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "4",
+                "color": "#ffc800",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "7",
+                "color": "#ea5353",
+                "text": "",
+                "textType": "label"
+            }
+        ],
+        "min": "900",
+        "max": "1100",
+        "sizeThickness": 16,
+        "sizeGap": 4,
+        "sizeKeyThickness": 8,
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 1140,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a0592d91ce63f98b",
+        "type": "function",
+        "z": "c94e87d611337bd7",
+        "name": "SIMULATE SENSOR VARIATION",
+        "func": "\nlet data = msg.payload;\n\n// Simulate small changes in sensor readings\ndata.temperature = Number(\n    (29.5 + (Math.random() - 0.5) * 2).toFixed(2)\n);\n\ndata.humidity = Number(\n    (65.4 + (Math.random() - 0.5) * 4).toFixed(2)\n);\n\ndata.pressure = Number(\n    (1008.25 + (Math.random() - 0.5) * 2).toFixed(2)\n);\n\nmsg.payload = data;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 140,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a0dc519483c473e0",
+        "type": "ui-chart",
+        "z": "c94e87d611337bd7",
+        "group": "08f98fa12150f3ce",
+        "name": "",
+        "label": "Temperature trend",
+        "order": 14,
+        "chartType": "line",
+        "category": "topic",
+        "categoryType": "msg",
+        "xAxisLabel": "",
+        "xAxisProperty": "",
+        "xAxisPropertyType": "timestamp",
+        "xAxisType": "time",
+        "xAxisFormat": "",
+        "xAxisFormatType": "auto",
+        "xmin": "",
+        "xmax": "",
+        "yAxisLabel": "",
+        "yAxisProperty": "payload",
+        "yAxisPropertyType": "msg",
+        "ymin": "",
+        "ymax": "",
+        "bins": 10,
+        "action": "append",
+        "stackSeries": false,
+        "pointShape": "circle",
+        "pointRadius": 4,
+        "showLegend": true,
+        "removeOlder": 1,
+        "removeOlderUnit": "3600",
+        "removeOlderPoints": "",
+        "colors": [
+            "#0095ff",
+            "#ff0000",
+            "#ff7f0e",
+            "#2ca02c",
+            "#a347e1",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "textColor": [
+            "#666666"
+        ],
+        "textColorDefault": true,
+        "gridColor": [
+            "#e5e5e5"
+        ],
+        "gridColorDefault": true,
+        "width": 6,
+        "height": 8,
+        "className": "",
+        "interpolation": "linear",
+        "x": 1170,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8fbc7f84a3810a56",
+        "type": "function",
+        "z": "c94e87d611337bd7",
+        "name": "TEMPERATURE CHART DATA",
+        "func": "\nmsg.topic = \"Temperature\";\nmsg.payload = msg.payload.temperature;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 360,
+        "wires": [
+            [
+                "a0dc519483c473e0"
+            ]
+        ]
+    },
+    {
+        "id": "d593dc746e6c69ef",
+        "type": "function",
+        "z": "c94e87d611337bd7",
+        "name": "Humidity function",
+        "func": "msg.topic = \"Humidity\";\nmsg.payload = msg.payload.humidity;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 870,
+        "y": 460,
+        "wires": [
+            [
+                "24f294d932edeec0"
+            ]
+        ]
+    },
+    {
+        "id": "e9904dd4d1bbc2f2",
+        "type": "function",
+        "z": "c94e87d611337bd7",
+        "name": "Pressure function",
+        "func": "msg.topic = \"Pressure\";\nmsg.payload = msg.payload.pressure;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 870,
+        "y": 540,
+        "wires": [
+            [
+                "1ebae8f5d9ef6747"
+            ]
+        ]
+    },
+    {
+        "id": "24f294d932edeec0",
+        "type": "ui-chart",
+        "z": "c94e87d611337bd7",
+        "group": "08f98fa12150f3ce",
+        "name": "",
+        "label": "Humidity Trend",
+        "order": 15,
+        "chartType": "line",
+        "category": "topic",
+        "categoryType": "msg",
+        "xAxisLabel": "",
+        "xAxisProperty": "",
+        "xAxisPropertyType": "timestamp",
+        "xAxisType": "time",
+        "xAxisFormat": "",
+        "xAxisFormatType": "auto",
+        "xmin": "",
+        "xmax": "",
+        "yAxisLabel": "",
+        "yAxisProperty": "payload",
+        "yAxisPropertyType": "msg",
+        "ymin": "",
+        "ymax": "",
+        "bins": 10,
+        "action": "append",
+        "stackSeries": false,
+        "pointShape": "circle",
+        "pointRadius": 4,
+        "showLegend": true,
+        "removeOlder": 1,
+        "removeOlderUnit": "3600",
+        "removeOlderPoints": "",
+        "colors": [
+            "#0095ff",
+            "#ff0000",
+            "#ff7f0e",
+            "#2ca02c",
+            "#a347e1",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "textColor": [
+            "#666666"
+        ],
+        "textColorDefault": true,
+        "gridColor": [
+            "#e5e5e5"
+        ],
+        "gridColorDefault": true,
+        "width": 6,
+        "height": 8,
+        "className": "",
+        "interpolation": "linear",
+        "x": 1180,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1ebae8f5d9ef6747",
+        "type": "ui-chart",
+        "z": "c94e87d611337bd7",
+        "group": "08f98fa12150f3ce",
+        "name": "",
+        "label": "Pressure Trend",
+        "order": 16,
+        "chartType": "line",
+        "category": "topic",
+        "categoryType": "msg",
+        "xAxisLabel": "",
+        "xAxisProperty": "",
+        "xAxisPropertyType": "timestamp",
+        "xAxisType": "time",
+        "xAxisFormat": "",
+        "xAxisFormatType": "auto",
+        "xmin": "",
+        "xmax": "",
+        "yAxisLabel": "",
+        "yAxisProperty": "payload",
+        "yAxisPropertyType": "msg",
+        "ymin": "",
+        "ymax": "",
+        "bins": 10,
+        "action": "append",
+        "stackSeries": false,
+        "pointShape": "circle",
+        "pointRadius": 4,
+        "showLegend": true,
+        "removeOlder": 1,
+        "removeOlderUnit": "3600",
+        "removeOlderPoints": "",
+        "colors": [
+            "#0095ff",
+            "#ff0000",
+            "#ff7f0e",
+            "#2ca02c",
+            "#a347e1",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "textColor": [
+            "#666666"
+        ],
+        "textColorDefault": true,
+        "gridColor": [
+            "#e5e5e5"
+        ],
+        "gridColorDefault": true,
+        "width": 6,
+        "height": 8,
+        "className": "",
+        "interpolation": "linear",
+        "x": 1180,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "95d9b06f7bf075ea",
+        "type": "inject",
+        "z": "c94e87d611337bd7",
+        "name": "GET OPENWEATHER DATA",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "600",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 170,
+        "y": 1540,
+        "wires": [
+            [
+                "b5bd69a1853d379f"
+            ]
+        ]
+    },
+    {
+        "id": "b5bd69a1853d379f",
+        "type": "http request",
+        "z": "c94e87d611337bd7",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.openweathermap.org/data/2.5/weather?lat=12.75&lon=80.19&appid=14708f1f426832160864bb2f0d456ff6&units=metric",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 390,
+        "y": 1360,
+        "wires": [
+            [
+                "de18e297f938fc9d"
+            ]
+        ]
+    },
+    {
+        "id": "de18e297f938fc9d",
+        "type": "function",
+        "z": "c94e87d611337bd7",
+        "name": "function 1",
+        "func": "\nlet data = msg.payload;\n\nif (!data || !data.main || !data.weather) {\n    node.warn(\"Invalid OpenWeather response\");\n    return null;\n}\n\nlet weatherData = {\n    temperature: data.main.temp,\n    feelsLike: data.main.feels_like,\n    humidity: data.main.humidity,\n    pressure: data.main.pressure,\n    groundPressure: data.main.grnd_level,\n    windSpeed: data.wind.speed,\n    cloudCover: data.clouds.all,\n    description: data.weather[0].description,\n    rainfall: data.rain ? (data.rain[\"1h\"] || 0) : 0,\n    location: data.name,\n    timestamp: new Date(data.dt * 1000).toISOString()\n};\n\nflow.set(\"openWeatherData\", weatherData);\n\nmsg.payload = weatherData;\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 1180,
+        "wires": [
+            [
+                "1ca07ccf9babe0ce",
+                "d3dbc5b622c974e0"
+            ]
+        ]
+    },
+    {
+        "id": "1ca07ccf9babe0ce",
+        "type": "debug",
+        "z": "c94e87d611337bd7",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 720,
+        "y": 1280,
+        "wires": []
+    },
+    {
+        "id": "b70842048b6cab00",
+        "type": "function",
+        "z": "c94e87d611337bd7",
+        "name": "STORE LATEST BME280",
+        "func": "\nlet d = msg.payload;\n\nif (!d ||\n    typeof d.temperature !== \"number\" ||\n    typeof d.humidity !== \"number\" ||\n    typeof d.pressure !== \"number\") {\n    return null;\n}\n\nflow.set(\"latestBME280\", {\n    temperature: d.temperature,\n    humidity: d.humidity,\n    pressure: d.pressure\n});\n\nreturn null;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 820,
+        "wires": [
+            [
+                "d3dbc5b622c974e0"
+            ]
+        ]
+    },
+    {
+        "id": "d3dbc5b622c974e0",
+        "type": "function",
+        "z": "c94e87d611337bd7",
+        "name": "WEATHER COMPARISON ENGINE",
+        "func": "\nlet local = flow.get(\"latestBME280\");\nlet weather = flow.get(\"openWeatherData\");\n\nif (!local || !weather) {\n    node.warn(\"Waiting for both data sources\");\n    return null;\n}\n\nmsg.payload = {\n    localTemperature: local.temperature,\n    weatherTemperature: weather.temperature,\n\n    localHumidity: local.humidity,\n    weatherHumidity: weather.humidity,\n\n    temperatureDifference: Number(\n        (local.temperature - weather.temperature).toFixed(2)\n    ),\n\n    humidityDifference: Number(\n        (local.humidity - weather.humidity).toFixed(2)\n    )\n};\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 930,
+        "y": 880,
+        "wires": [
+            [
+                "eb4d03b7d048e9e5",
+                "63b3161766d570b7",
+                "d848eb310b34d831",
+                "1a2e573093c136e6"
+            ]
+        ]
+    },
+    {
+        "id": "eb4d03b7d048e9e5",
+        "type": "debug",
+        "z": "c94e87d611337bd7",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1380,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "63b3161766d570b7",
+        "type": "function",
+        "z": "c94e87d611337bd7",
+        "name": "INDUSTRIAL RECOMMENDATION ENGINE",
+        "func": "// INDUSTRIAL RECOMMENDATION ENGINE\n// Demo use case: electronics component storage (thresholds are illustrative, not certified)\n// Runs on: (a) every BME280 reading  (b) weather-comparison message (re-evaluates latest reading)\n\n// ================= CONFIG (tune thresholds here only) =================\nconst CFG = {\n    temp:      { low: 18, targetMax: 25, watchMax: 28, critical: 32, edge: 1 },   // °C\n    hum:       { low: 30, targetMax: 50, watchMax: 60, warnMax: 70 },             // %RH\n    dewMargin: { critical: 2, warning: 4 },                                       // °C above dew point\n    tempRate:  { watch: 0.2, rapid: 0.5 },                                        // °C per minute\n    pressure:  { watch: 1, significant: 2, minSpanMin: 10 },                      // hPa per hour\n    trendWindowMs: 120000,       // window used for temperature trend\n    minTrendSpanMs: 20000,       // minimum time covered before a trend is trusted\n    minTrendSamples: 3,\n    pressureWindowMs: 3600000,   // 1 hour history for pressure trend\n    historyMaxSamples: 4000\n};\n\nconst SEV_TAG = [\"INFO\", \"WATCH\", \"WARNING\", \"CRITICAL\"];\n\n// ================= HELPERS =================\nfunction slopePerMin(samples, key) {            // least-squares slope, units per minute\n    const n = samples.length;\n    const t0 = samples[0].t;\n    let sx = 0, sy = 0, sxx = 0, sxy = 0;\n    for (const s of samples) {\n        const x = (s.t - t0) / 60000;\n        sx += x; sy += s[key]; sxx += x * x; sxy += x * s[key];\n    }\n    const d = n * sxx - sx * sx;\n    return d === 0 ? null : (n * sxy - sx * sy) / d;\n}\n\nfunction dewPoint(t, rh) {                      // Magnus formula\n    if (rh <= 0) return null;\n    const a = 17.62, b = 243.12;\n    const g = Math.log(rh / 100) + (a * t) / (b + t);\n    return (b * g) / (a - g);\n}\n\n// ================= GET READING =================\nconst p = msg.payload || {};\nconst isLive = [p.temperature, p.humidity, p.pressure]\n    .every(v => typeof v === \"number\" && isFinite(v));\n\nconst now = Date.now();\nlet history = flow.get(\"industrialHistory\") || [];\nlet reading;\n\nif (isLive) {\n    reading = { temperature: p.temperature, humidity: p.humidity, pressure: p.pressure };\n    history.push({ t: now, temperature: reading.temperature, humidity: reading.humidity, pressure: reading.pressure });\n    history = history.filter(s => now - s.t <= CFG.pressureWindowMs);\n    if (history.length > CFG.historyMaxSamples) {\n        history = history.slice(history.length - CFG.historyMaxSamples);\n    }\n    flow.set(\"industrialHistory\", history);\n} else {\n    reading = flow.get(\"latestBME280\");\n    if (!reading) {\n        return null;\n    }\n}\n\nconst weather = flow.get(\"openWeatherData\");    // optional, not required\nconst T = Number(reading.temperature);\nconst H = Number(reading.humidity);\nconst P = Number(reading.pressure);\n\n// ================= RECOMMENDATIONS =================\nlet recs = [];\nconst add = (sev, text) => recs.push({ sev, text });\n\n// --- Temperature level ---\nif (T >= CFG.temp.critical) {\n    add(3, `Temperature ${T.toFixed(1)}°C is critically high. Inspect cooling and move heat-sensitive components.`);\n} else if (T > CFG.temp.watchMax) {\n    add(2, `Temperature ${T.toFixed(1)}°C is above ${CFG.temp.watchMax}°C. Investigate cooling and storage conditions.`);\n} else if (T > CFG.temp.targetMax) {\n    add(1, `Temperature ${T.toFixed(1)}°C is above target (${CFG.temp.targetMax}°C). Monitor increasing storage temperature.`);\n} else if (T < CFG.temp.low) {\n    add(1, `Temperature ${T.toFixed(1)}°C is below ${CFG.temp.low}°C. Check whether storage temperature is too low for the stored components.`);\n} else if (T > CFG.temp.targetMax - CFG.temp.edge) {\n    add(1, `Temperature ${T.toFixed(1)}°C is within target but close to the upper limit (${CFG.temp.targetMax}°C).`);\n} else if (T < CFG.temp.low + CFG.temp.edge) {\n    add(1, `Temperature ${T.toFixed(1)}°C is within target but close to the lower limit (${CFG.temp.low}°C).`);\n} else {\n    add(0, `Temperature ${T.toFixed(1)}°C is within target range (${CFG.temp.low}-${CFG.temp.targetMax}°C).`);\n}\n\n// --- Temperature trend (what makes the engine react quickly) ---\nconst recent = history.filter(s => now - s.t <= CFG.trendWindowMs);\nlet tempRate = null;\nif (recent.length >= CFG.minTrendSamples &&\n    (recent[recent.length - 1].t - recent[0].t) >= CFG.minTrendSpanMs) {\n    tempRate = slopePerMin(recent, \"temperature\");\n}\n\nif (tempRate === null) {\n    add(0, \"Collecting temperature trend data.\");\n} else {\n    const r = tempRate;\n    const ar = Math.abs(r);\n    const dir = r > 0 ? \"rising\" : \"falling\";\n    if (ar >= CFG.tempRate.rapid) {\n        add(2, `Temperature ${dir} rapidly (${r.toFixed(2)}°C/min). Check for a heat source, HVAC fault or door/airflow change.`);\n    } else if (ar >= CFG.tempRate.watch) {\n        add(1, `Temperature ${dir} (${r.toFixed(2)}°C/min). Monitor the trend.`);\n    } else {\n        add(0, `Temperature stable (${r.toFixed(2)}°C/min).`);\n    }\n\n    // Early warning: projected limit crossing within 30 minutes\n    if (r > 0.05 && T <= CFG.temp.watchMax) {\n        const mins = (CFG.temp.watchMax - T) / r;\n        if (mins <= 30) {\n            add(1, `At the current rate, temperature may exceed ${CFG.temp.watchMax}°C in about ${Math.ceil(mins)} min.`);\n        }\n    }\n    if (r < -0.05 && T >= CFG.temp.low) {\n        const mins = (T - CFG.temp.low) / Math.abs(r);\n        if (mins <= 30) {\n            add(1, `At the current rate, temperature may fall below ${CFG.temp.low}°C in about ${Math.ceil(mins)} min.`);\n        }\n    }\n}\n\n// --- Humidity ---\nif (H > CFG.hum.warnMax) {\n    add(2, `Humidity ${H.toFixed(1)}% - high-moisture warning. Inspect packaging and dehumidification.`);\n} else if (H > CFG.hum.watchMax) {\n    add(2, `Humidity ${H.toFixed(1)}%. Review moisture-sensitive component storage.`);\n} else if (H > CFG.hum.targetMax) {\n    add(1, `Humidity ${H.toFixed(1)}%. Monitor moisture exposure.`);\n} else if (H < CFG.hum.low) {\n    add(1, `Humidity ${H.toFixed(1)}% is low. Check electrostatic discharge (ESD) precautions.`);\n} else {\n    add(0, `Humidity ${H.toFixed(1)}% is within target range (${CFG.hum.low}-${CFG.hum.targetMax}%).`);\n}\n\n// --- Condensation risk (temperature vs dew point) ---\nconst dp = dewPoint(T, H);\nif (dp !== null) {\n    const margin = T - dp;\n    if (margin <= CFG.dewMargin.critical) {\n        add(3, `Condensation risk: temperature is only ${margin.toFixed(1)}°C above the dew point (${dp.toFixed(1)}°C). Protect exposed components.`);\n    } else if (margin <= CFG.dewMargin.warning) {\n        add(2, `Condensation margin is ${margin.toFixed(1)}°C (dew point ${dp.toFixed(1)}°C). Avoid further cooling.`);\n    }\n}\n\nif (tempRate !== null && tempRate <= -CFG.tempRate.watch && H > CFG.hum.targetMax) {\n    add(2, \"Cooling while humid. Condensation risk is increasing.\");\n}\n\n// --- Combined condition ---\nif (T > CFG.temp.watchMax && H > CFG.hum.warnMax) {\n    add(3, \"High temperature and humidity together. Inspect storage conditions immediately.\");\n}\n\n// --- Pressure trend (hPa per hour, experimental) ---\nconst oldest = history[0];\nif (isLive && oldest && oldest.t < now) {\n    const spanMin = (now - oldest.t) / 60000;\n    if (spanMin >= CFG.pressure.minSpanMin) {\n        const change = (P - oldest.pressure) * 60 / spanMin;\n        if (change < -CFG.pressure.significant) {\n            add(1, `Significant pressure drop (${change.toFixed(1)} hPa/h). Check external weather conditions.`);\n        } else if (change > CFG.pressure.significant) {\n            add(1, `Significant pressure rise (+${change.toFixed(1)} hPa/h). Monitor conditions.`);\n        } else if (change < -CFG.pressure.watch) {\n            add(1, `Pressure falling (${change.toFixed(1)} hPa/h). Monitor atmospheric changes.`);\n        } else {\n            add(0, \"Atmospheric pressure stable.\");\n        }\n    }\n}\n\n// ================= STATUS + OUTPUT =================\nconst maxSev = recs.reduce((m, r) => Math.max(m, r.sev), 0);\nconst status = maxSev >= 3 ? \"CRITICAL\" : (maxSev === 2 ? \"WARNING\" : \"NORMAL\");\n\nrecs.sort((a, b) => b.sev - a.sev);             // most serious first (stable)\n\nlet tempDiff = null;\nlet humidityDiff = null;\nif (weather) {\n    tempDiff = Number((T - weather.temperature).toFixed(2));\n    humidityDiff = Number((H - weather.humidity).toFixed(2));\n}\n\nmsg.payload = {\n    status: status,\n    recommendations: recs.map(r => `[${SEV_TAG[r.sev]}] ${r.text}`),\n    localTemperature: T,\n    localHumidity: H,\n    weatherFeelsLike: weather ? weather.feelsLike : null,\n    temperatureDifference: tempDiff,\n    humidityDifference: humidityDiff,\n    temperatureTrend: tempRate === null ? null : Number(tempRate.toFixed(3)),\n    dewPoint: dp === null ? null : Number(dp.toFixed(2)),\n    timestamp: new Date().toISOString()\n};\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1490,
+        "y": 900,
+        "wires": [
+            [
+                "1c55a1b96f91a3ff",
+                "16caef225c4f554d",
+                "848811805305c73a",
+                "1a2e573093c136e6"
+            ]
+        ]
+    },
+    {
+        "id": "1c55a1b96f91a3ff",
+        "type": "debug",
+        "z": "c94e87d611337bd7",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1980,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "848811805305c73a",
+        "type": "ui-text",
+        "z": "c94e87d611337bd7",
+        "group": "08f98fa12150f3ce",
+        "order": 10,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Environmental Status",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "wrapText": false,
+        "className": "",
+        "value": "payload.status",
+        "valueType": "msg",
+        "x": 1920,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "a760a06319dcccae",
+        "type": "ui-text",
+        "z": "c94e87d611337bd7",
+        "group": "08f98fa12150f3ce",
+        "order": 9,
+        "width": 0,
+        "height": 0,
+        "name": "SMART RECOMMENDATIONS",
+        "label": "Smart Recommendations",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "wrapText": true,
+        "className": "",
+        "value": "payload",
+        "valueType": "msg",
+        "x": 2190,
+        "y": 960,
+        "wires": []
+    },
+    {
+        "id": "16caef225c4f554d",
+        "type": "function",
+        "z": "c94e87d611337bd7",
+        "name": "formattingfunction",
+        "func": "\nlet recommendations = msg.payload.recommendations;\n\nmsg.payload = recommendations.join(\"\\n\");\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1890,
+        "y": 940,
+        "wires": [
+            [
+                "a760a06319dcccae"
+            ]
+        ]
+    },
+    {
+        "id": "d848eb310b34d831",
+        "type": "function",
+        "z": "c94e87d611337bd7",
+        "name": "COMPARISON DASHBOARD FORMATTER",
+        "func": "\nlet data = msg.payload;\n\nif (!data) {\n    return null;\n}\n\nmsg.payload = {\n    localTemperature: data.localTemperature.toFixed(2) + \" °C\",\n    weatherTemperature: data.weatherTemperature.toFixed(2) + \" °C\",\n\n    localHumidity: data.localHumidity.toFixed(2) + \" %\",\n    weatherHumidity: data.weatherHumidity.toFixed(2) + \" %\",\n\n    temperatureDifference:\n        (data.temperatureDifference > 0 ? \"+\" : \"\") +\n        data.temperatureDifference.toFixed(2) + \" °C\",\n\n    humidityDifference:\n        (data.humidityDifference > 0 ? \"+\" : \"\") +\n        data.humidityDifference.toFixed(2) + \" percentage points\"\n};\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1750,
+        "y": 400,
+        "wires": [
+            [
+                "d6de9bd3579c3893",
+                "c97b2bf9ef0292b8",
+                "1056337185493cc6",
+                "2fceb967ec1f7422",
+                "f6354301a45f9502",
+                "8909e053a5dd41a3",
+                "374c6d79f6bce786"
+            ]
+        ]
+    },
+    {
+        "id": "d6de9bd3579c3893",
+        "type": "debug",
+        "z": "c94e87d611337bd7",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2220,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "c97b2bf9ef0292b8",
+        "type": "ui-text",
+        "z": "c94e87d611337bd7",
+        "group": "08f98fa12150f3ce",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "name": "Local Tempeature",
+        "label": "BME280 Temperature",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "wrapText": false,
+        "className": "",
+        "value": "payload.localTemperature",
+        "valueType": "msg",
+        "x": 2170,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "1056337185493cc6",
+        "type": "ui-text",
+        "z": "c94e87d611337bd7",
+        "group": "08f98fa12150f3ce",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "name": "OpenWeather Temperature",
+        "label": "OpenWeather Temperature",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "wrapText": false,
+        "className": "",
+        "value": "payload.weatherTemperature",
+        "valueType": "msg",
+        "x": 2240,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "374c6d79f6bce786",
+        "type": "ui-text",
+        "z": "c94e87d611337bd7",
+        "group": "08f98fa12150f3ce",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "name": "BME280 Humidity",
+        "label": "BME280 Humidity",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "wrapText": false,
+        "className": "",
+        "value": "payload.localHumidity",
+        "valueType": "msg",
+        "x": 2190,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "2fceb967ec1f7422",
+        "type": "ui-text",
+        "z": "c94e87d611337bd7",
+        "group": "08f98fa12150f3ce",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "\tOpenWeather Humidity",
+        "label": "\tOpenWeather Humidity",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "wrapText": false,
+        "className": "",
+        "value": "payload.weatherHumidity",
+        "valueType": "msg",
+        "x": 2190,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "8909e053a5dd41a3",
+        "type": "ui-text",
+        "z": "c94e87d611337bd7",
+        "group": "08f98fa12150f3ce",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "\tTemperature Difference",
+        "label": "Temperature Difference",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "wrapText": false,
+        "className": "",
+        "value": "payload.temperatureDifference",
+        "valueType": "msg",
+        "x": 2150,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "f6354301a45f9502",
+        "type": "ui-text",
+        "z": "c94e87d611337bd7",
+        "group": "08f98fa12150f3ce",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "\tHumidity Difference",
+        "label": "Humidity Difference",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "wrapText": false,
+        "className": "",
+        "value": "payload.humidityDifference",
+        "valueType": "msg",
+        "x": 2210,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "1a2e573093c136e6",
+        "type": "function",
+        "z": "c94e87d611337bd7",
+        "name": "DASHBOARD DATA BUILDER",
+        "func": "\nlet data = context.get(\"dashboardData\") || {};\nlet p = msg.payload;\n\nif (!p || typeof p !== \"object\") {\n    return null;\n}\n\n// 1. Store recommendation engine output\nif (Array.isArray(p.recommendations)) {\n    data.analysis = p;\n}\n\n// 2. Store comparison output AND latest local sensor readings\nelse if (\n    p.localTemperature !== undefined &&\n    p.weatherTemperature !== undefined\n) {\n    data.comparison = p;\n\n    // Update sensor values from the comparison engine\n    data.sensor = {\n        temperature: p.localTemperature,\n        humidity: p.localHumidity,\n        pressure: p.localPressure\n    };\n}\n\n// 3. Store direct BME280 sensor output\nelse if (\n    p.temperature !== undefined &&\n    p.pressure !== undefined &&\n    p.humidity !== undefined\n) {\n    data.sensor = p;\n}\n\ncontext.set(\"dashboardData\", data);\n\n// Wait until all required data is available\nif (!data.sensor || !data.comparison || !data.analysis) {\n    node.warn(\"Waiting for all dashboard data sources\");\n    return null;\n}\n\nlet s = data.sensor;\nlet c = data.comparison;\nlet a = data.analysis;\n\nmsg.payload = {\n    localTemperature: Number(s.temperature),\n    localHumidity: Number(s.humidity),\n    localPressure: Number(s.pressure),\n\n    weatherTemperature: Number(c.weatherTemperature),\n    weatherHumidity: Number(c.weatherHumidity),\n\n    temperatureDifference: Number(c.temperatureDifference),\n    humidityDifference: Number(c.humidityDifference),\n\n    status: a.status,\n    recommendations: a.recommendations,\n\n    timestamp: new Date().toISOString()\n};\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1410,
+        "y": 1360,
+        "wires": [
+            [
+                "62e1903602fe40cc",
+                "98abcc6cebe1e4f4"
+            ]
+        ]
+    },
+    {
+        "id": "62e1903602fe40cc",
+        "type": "debug",
+        "z": "c94e87d611337bd7",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1840,
+        "y": 1460,
+        "wires": []
+    },
+    {
+        "id": "98abcc6cebe1e4f4",
+        "type": "ui-template",
+        "z": "c94e87d611337bd7",
+        "group": "08f98fa12150f3ce",
+        "page": "",
+        "ui": "",
+        "name": "SMART ENVIRONMENT DASHBOARD",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "head": "",
+        "format": "<template>\n  <div class=\"env-dashboard\">\n    <header class=\"topbar\">\n      <div>\n        <div class=\"eyebrow\">SNU CHENNAI · IoT MONITORING</div>\n        <h1>Environmental Intelligence</h1>\n        <p>Local microclimate monitoring and weather comparison</p>\n      </div>\n      <div class=\"live-indicator\">\n        <span class=\"live-dot\"></span> LIVE\n      </div>\n    </header>\n\n    <!-- LOCAL SENSOR GAUGES -->\n    <section class=\"section\">\n      <h2>Local Sensor Readings</h2>\n\n      <div class=\"gauge-grid\">\n        <div class=\"metric-card\">\n          <div class=\"metric-heading\">Temperature</div>\n          <svg viewBox=\"0 0 160 100\" class=\"gauge\">\n            <path d=\"M 15 80 A 65 65 0 0 1 145 80\" pathLength=\"100\" class=\"gauge-track\" />\n            <path d=\"M 15 80 A 65 65 0 0 1 145 80\" pathLength=\"100\" class=\"gauge-value\"\n              :stroke-dasharray=\"gaugeValue(readings.temperature, 50) + ' 100'\" />\n            <text x=\"80\" y=\"67\" class=\"gauge-number\">\n              {{ display(readings.temperature) }}\n            </text>\n            <text x=\"80\" y=\"87\" class=\"gauge-unit\">°C</text>\n          </svg>\n          <div class=\"metric-foot\">BME280 sensor</div>\n        </div>\n\n        <div class=\"metric-card\">\n          <div class=\"metric-heading\">Humidity</div>\n          <svg viewBox=\"0 0 160 100\" class=\"gauge\">\n            <path d=\"M 15 80 A 65 65 0 0 1 145 80\" pathLength=\"100\" class=\"gauge-track\" />\n            <path d=\"M 15 80 A 65 65 0 0 1 145 80\" pathLength=\"100\" class=\"gauge-value\"\n              :stroke-dasharray=\"gaugeValue(readings.humidity, 100) + ' 100'\" />\n            <text x=\"80\" y=\"67\" class=\"gauge-number\">\n              {{ display(readings.humidity) }}\n            </text>\n            <text x=\"80\" y=\"87\" class=\"gauge-unit\">%</text>\n          </svg>\n          <div class=\"metric-foot\">Relative humidity</div>\n        </div>\n\n        <div class=\"metric-card\">\n          <div class=\"metric-heading\">Atmospheric Pressure</div>\n          <svg viewBox=\"0 0 160 100\" class=\"gauge\">\n            <path d=\"M 15 80 A 65 65 0 0 1 145 80\" pathLength=\"100\" class=\"gauge-track\" />\n            <path d=\"M 15 80 A 65 65 0 0 1 145 80\" pathLength=\"100\" class=\"gauge-value\"\n              :stroke-dasharray=\"gaugeValue(readings.pressure, 1100, 900) + ' 100'\" />\n            <text x=\"80\" y=\"67\" class=\"gauge-number\">\n              {{ display(readings.pressure) }}\n            </text>\n            <text x=\"80\" y=\"87\" class=\"gauge-unit\">hPa</text>\n          </svg>\n          <div class=\"metric-foot\">Local pressure</div>\n        </div>\n      </div>\n    </section>\n\n    <!-- WEATHER COMPARISON -->\n    <section class=\"section\">\n      <h2>Weather Comparison</h2>\n\n      <div class=\"comparison-grid\">\n        <div class=\"comparison-card\">\n          <h3>Temperature</h3>\n          <div class=\"comparison-row\">\n            <span>BME280</span>\n            <strong>{{ display(readings.temperature) }} °C</strong>\n          </div>\n          <div class=\"comparison-row\">\n            <span>OpenWeather</span>\n            <strong>{{ display(readings.weatherTemperature) }} °C</strong>\n          </div>\n          <div class=\"comparison-row difference\">\n            <span>Difference</span>\n            <strong>{{ signed(readings.temperatureDifference) }} °C</strong>\n          </div>\n        </div>\n\n        <div class=\"comparison-card\">\n          <h3>Humidity</h3>\n          <div class=\"comparison-row\">\n            <span>BME280</span>\n            <strong>{{ display(readings.humidity) }} %</strong>\n          </div>\n          <div class=\"comparison-row\">\n            <span>OpenWeather</span>\n            <strong>{{ display(readings.weatherHumidity) }} %</strong>\n          </div>\n          <div class=\"comparison-row difference\">\n            <span>Difference</span>\n            <strong>{{ signed(readings.humidityDifference) }} pp</strong>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"weather-strip\">\n        <div>\n          <span class=\"weather-label\">Weather condition</span>\n          <strong>{{ readings.weatherDescription || 'Waiting for data' }}</strong>\n        </div>\n        <div>\n          <span class=\"weather-label\">Feels like</span>\n          <strong>\n            {{ display(readings.feelsLike) }}\n            <small v-if=\"readings.feelsLike !== null\">°C</small>\n          </strong>\n        </div>\n        <div>\n          <span class=\"weather-label\">Wind speed</span>\n          <strong>\n            {{ display(readings.windSpeed) }}\n            <small v-if=\"readings.windSpeed !== null\">m/s</small>\n          </strong>\n        </div>\n      </div>\n    </section>\n\n    <!-- ENVIRONMENTAL ANALYSIS -->\n    <section class=\"section\">\n      <h2>Environmental Analysis</h2>\n\n      <div class=\"analysis-card\">\n        <div class=\"status-row\">\n          <span>Monitoring status</span>\n          <strong :class=\"statusClass\">{{ readings.status }}</strong>\n        </div>\n\n        <div class=\"recommendation-heading\">Smart Recommendations</div>\n\n        <div v-if=\"readings.recommendations.length\">\n          <div v-for=\"(item, index) in readings.recommendations\" :key=\"index\" class=\"recommendation\">\n            <span class=\"recommendation-mark\">›</span>\n            <span>{{ item }}</span>\n          </div>\n        </div>\n        <div v-else class=\"recommendation muted\">\n          Waiting for recommendation data...\n        </div>\n      </div>\n    </section>\n\n    <footer class=\"footer\">\n      <span>Last updated: {{ readings.lastUpdated || 'Waiting for data' }}</span>\n      <span>Smart Environmental Intelligence System</span>\n    </footer>\n  </div>\n</template>\n\n<script>\n  export default {\n  data() {\n  return {\n  readings: {\n  temperature: null,\n  humidity: null,\n  pressure: null,\n  weatherTemperature: null,\n  weatherHumidity: null,\n  temperatureDifference: null,\n  humidityDifference: null,\n  feelsLike: null,\n  windSpeed: null,\n  weatherDescription: \"\",\n  status: \"WAITING\",\n  recommendations: [],\n  lastUpdated: \"\"\n  }\n  };\n  },\n  \n  watch: {\n  msg: {\n  immediate: true,\n  handler(newMsg) {\n  this.applyMessage(newMsg);\n  }\n  }\n  },\n  \n  computed: {\n  statusClass() {\n  const status = (this.readings.status || \"\").toUpperCase();\n  \n  if (status.includes(\"CRITICAL\")) return \"status-critical\";\n  if (status.includes(\"WARNING\") || status.includes(\"ALERT\")) {\n  return \"status-warning\";\n  }\n  if (status === \"NORMAL\") return \"status-normal\";\n  \n  return \"status-waiting\";\n  }\n  },\n  \n  methods: {\n  number(value) {\n  if (value === null || value === undefined || value === \"\") {\n  return null;\n  }\n  \n  const result = Number(value);\n  return Number.isFinite(result) ? result : null;\n  },\n  \n  applyMessage(msg) {\n  if (!msg || !msg.payload || typeof msg.payload !== \"object\") {\n  return;\n  }\n  \n  const p = msg.payload;\n  \n  // Local BME280 readings\n  if (p.temperature !== undefined) {\n  this.readings.temperature = this.number(p.temperature);\n  }\n  \n  if (p.humidity !== undefined) {\n  this.readings.humidity = this.number(p.humidity);\n  }\n  \n  if (p.pressure !== undefined) {\n  this.readings.pressure = this.number(p.pressure);\n  }\n  \n  // Dashboard builder / comparison output\n  if (p.localTemperature !== undefined) {\n  this.readings.temperature = this.number(p.localTemperature);\n  }\n  \n  if (p.localHumidity !== undefined) {\n  this.readings.humidity = this.number(p.localHumidity);\n  }\n  \n  if (p.localPressure !== undefined) {\n  this.readings.pressure = this.number(p.localPressure);\n  }\n  \n  if (p.weatherTemperature !== undefined) {\n  this.readings.weatherTemperature =\n  this.number(p.weatherTemperature);\n  }\n  \n  if (p.weatherHumidity !== undefined) {\n  this.readings.weatherHumidity =\n  this.number(p.weatherHumidity);\n  }\n  \n  if (p.temperatureDifference !== undefined) {\n  this.readings.temperatureDifference =\n  this.number(p.temperatureDifference);\n  }\n  \n  if (p.humidityDifference !== undefined) {\n  this.readings.humidityDifference =\n  this.number(p.humidityDifference);\n  }\n  \n  // Optional weather information\n  if (p.feelsLike !== undefined) {\n  this.readings.feelsLike = this.number(p.feelsLike);\n  }\n  \n  if (p.weatherFeelsLike !== undefined) {\n  this.readings.feelsLike = this.number(p.weatherFeelsLike);\n  }\n  \n  if (p.windSpeed !== undefined) {\n  this.readings.windSpeed = this.number(p.windSpeed);\n  }\n  \n  if (p.weatherDescription !== undefined) {\n  this.readings.weatherDescription = p.weatherDescription;\n  }\n  \n  if (p.description !== undefined) {\n  this.readings.weatherDescription = p.description;\n  }\n  \n  // Environmental analysis\n  if (p.status !== undefined) {\n  this.readings.status = String(p.status).toUpperCase();\n  }\n  \n  if (Array.isArray(p.recommendations)) {\n  this.readings.recommendations = p.recommendations.map(item =>\n  typeof item === \"string\" ? item : JSON.stringify(item)\n  );\n  } else if (typeof p.recommendation === \"string\") {\n  this.readings.recommendations = [p.recommendation];\n  }\n  \n  this.readings.lastUpdated = new Date().toLocaleTimeString();\n  },\n  \n  display(value) {\n  return value === null || value === undefined\n  ? \"--\"\n  : Number(value).toFixed(2);\n  },\n  \n  signed(value) {\n  if (value === null || value === undefined) return \"--\";\n  \n  const n = Number(value);\n  return (n > 0 ? \"+\" : \"\") + n.toFixed(2);\n  },\n  \n  gaugeValue(value, max, min = 0) {\n  if (value === null || value === undefined) return 0;\n  \n  const percentage = ((Number(value) - min) / (max - min)) * 100;\n  \n  return Math.max(0, Math.min(100, percentage));\n  }\n  }\n  };\n</script>\n\n<style>\n  .env-dashboard {\n    box-sizing: border-box;\n    width: 100%;\n    max-width: none;\n    padding: 28px;\n    background: #171d24;\n    color: #e8e5dc;\n    border: 1px solid #39464d;\n    border-radius: 12px;\n    font-family: Inter, \"Segoe UI\", Arial, sans-serif;\n  }\n\n  .env-dashboard * {\n    box-sizing: border-box;\n  }\n\n  .topbar {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    gap: 18px;\n    padding-bottom: 24px;\n    border-bottom: 1px solid #39464d;\n  }\n\n  .eyebrow {\n    color: #83a99b;\n    font-size: 11px;\n    font-weight: 700;\n    letter-spacing: 2px;\n    margin-bottom: 9px;\n  }\n\n  .topbar h1 {\n    margin: 0;\n    font-size: clamp(22px, 3vw, 30px);\n    font-weight: 650;\n    letter-spacing: -0.5px;\n  }\n\n  .topbar p {\n    margin: 8px 0 0;\n    color: #a9b5bd;\n    font-size: 13px;\n  }\n\n  .live-indicator {\n    flex-shrink: 0;\n    display: flex;\n    align-items: center;\n    gap: 8px;\n    padding: 8px 12px;\n    border-radius: 20px;\n    background: #26372f;\n    color: #9bc5a9;\n    font-size: 10px;\n    font-weight: 700;\n    letter-spacing: 1px;\n  }\n\n  .live-dot {\n    width: 7px;\n    height: 7px;\n    border-radius: 50%;\n    background: #83b99a;\n    box-shadow: 0 0 8px #83b99a;\n  }\n\n  .section {\n    margin-top: 26px;\n  }\n\n  .section h2 {\n    margin: 0 0 14px;\n    color: #d9dedb;\n    font-size: 15px;\n    font-weight: 600;\n  }\n\n  .gauge-grid {\n    display: grid;\n    grid-template-columns: repeat(3, minmax(0, 1fr));\n    gap: 14px;\n  }\n\n  .metric-card,\n  .comparison-card,\n  .analysis-card {\n    min-width: 0;\n    background: #222c35;\n    border: 1px solid #39464d;\n    border-radius: 10px;\n  }\n\n  .metric-card {\n    padding: 16px;\n  }\n\n  .metric-heading {\n    color: #b9c5c3;\n    font-size: 13px;\n    font-weight: 600;\n    text-align: center;\n  }\n\n  .gauge {\n    display: block;\n    width: 100%;\n    max-width: 220px;\n    margin: 8px auto 0;\n    overflow: visible;\n  }\n\n  .gauge-track,\n  .gauge-value {\n    fill: none;\n    stroke-width: 9;\n    stroke-linecap: round;\n  }\n\n  .gauge-track {\n    stroke: #3b484d;\n  }\n\n  .gauge-value {\n    stroke: #83a99b;\n    transition: stroke-dasharray 0.5s ease;\n  }\n\n  .gauge-number {\n    fill: #e8e5dc;\n    text-anchor: middle;\n    font-size: 20px;\n    font-weight: 700;\n  }\n\n  .gauge-unit {\n    fill: #a9b5bd;\n    text-anchor: middle;\n    font-size: 10px;\n  }\n\n  .metric-foot {\n    color: #87969b;\n    font-size: 11px;\n    text-align: center;\n    margin-top: 2px;\n  }\n\n  .comparison-grid {\n    display: grid;\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n    gap: 14px;\n  }\n\n  .comparison-card {\n    padding: 16px;\n  }\n\n  .comparison-card h3 {\n    margin: 0 0 14px;\n    color: #83a99b;\n    font-size: 14px;\n    font-weight: 650;\n  }\n\n  .comparison-row {\n    display: flex;\n    justify-content: space-between;\n    gap: 12px;\n    padding: 10px 0;\n    border-bottom: 1px solid #39464d;\n    font-size: 12px;\n  }\n\n  .comparison-row:last-child {\n    border-bottom: 0;\n  }\n\n  .comparison-row span {\n    color: #a9b5bd;\n  }\n\n  .comparison-row strong {\n    color: #e8e5dc;\n    text-align: right;\n  }\n\n  .comparison-row.difference strong {\n    color: #c5b18c;\n  }\n\n  .weather-strip {\n    display: grid;\n    grid-template-columns: repeat(3, minmax(0, 1fr));\n    gap: 12px;\n    margin-top: 14px;\n    padding: 15px;\n    background: #222c35;\n    border: 1px solid #39464d;\n    border-radius: 10px;\n  }\n\n  .weather-strip>div {\n    display: flex;\n    flex-direction: column;\n    gap: 7px;\n  }\n\n  .weather-label {\n    color: #a9b5bd;\n    font-size: 11px;\n  }\n\n  .weather-strip strong {\n    color: #e8e5dc;\n    font-size: 13px;\n  }\n\n  .weather-strip small {\n    color: #a9b5bd;\n    font-size: 10px;\n  }\n\n  .analysis-card {\n    padding: 17px;\n  }\n\n  .status-row {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    gap: 12px;\n    padding-bottom: 14px;\n    border-bottom: 1px solid #39464d;\n    font-size: 13px;\n  }\n\n  .status-row span {\n    color: #a9b5bd;\n  }\n\n  .status-normal {\n    color: #91b99b;\n  }\n\n  .status-warning {\n    color: #d6a66b;\n  }\n\n  .status-critical {\n    color: #d47770;\n  }\n\n  .status-waiting {\n    color: #a9b5bd;\n  }\n\n  .recommendation-heading {\n    margin: 16px 0 10px;\n    color: #83a99b;\n    font-size: 13px;\n    font-weight: 650;\n  }\n\n  .recommendation {\n    display: flex;\n    gap: 10px;\n    align-items: flex-start;\n    margin-top: 8px;\n    padding: 12px;\n    background: #293640;\n    border-radius: 7px;\n    color: #d9dedb;\n    font-size: 12px;\n    line-height: 1.6;\n    overflow-wrap: anywhere;\n  }\n\n  .recommendation-mark {\n    color: #c5b18c;\n    font-size: 18px;\n    line-height: 1;\n  }\n\n  .recommendation.muted {\n    color: #a9b5bd;\n  }\n\n  .footer {\n    display: flex;\n    justify-content: space-between;\n    flex-wrap: wrap;\n    gap: 10px;\n    margin-top: 22px;\n    padding-top: 14px;\n    border-top: 1px solid #39464d;\n    color: #849197;\n    font-size: 10px;\n  }\n\n  @media (max-width: 700px) {\n    .env-dashboard {\n      padding: 17px;\n    }\n\n    .gauge-grid {\n      grid-template-columns: 1fr;\n    }\n\n    .comparison-grid {\n      grid-template-columns: 1fr;\n    }\n\n    .weather-strip {\n      grid-template-columns: 1fr;\n    }\n\n    .topbar {\n      align-items: flex-start;\n    }\n  }\n</style>",
+        "storeOutMessages": true,
+        "passthru": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1880,
+        "y": 1260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cd80d04c7825a06a",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.emqx.io",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "08f98fa12150f3ce",
+        "type": "ui-group",
+        "name": "SENSOR READINGS",
+        "page": "64161ad33d0668c0",
+        "width": "12",
+        "height": "12",
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default",
+        "tab": ""
+    },
+    {
+        "id": "64161ad33d0668c0",
+        "type": "ui-page",
+        "name": "BME 280 MONITOR",
+        "ui": "32e85ef13b54362d",
+        "path": "/page2",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "a0b020518a9788f5",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "tabs": [],
+        "order": 1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "32e85ef13b54362d",
+        "type": "ui-base",
+        "name": "My Dashboard",
+        "path": "/dashboard",
+        "appIcon": "",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "headerContent": "page",
+        "navigationStyle": "default",
+        "titleBarStyle": "default",
+        "showReconnectNotification": true,
+        "notificationDisplayTime": 1,
+        "showDisconnectNotification": true,
+        "allowInstall": false
+    },
+    {
+        "id": "a0b020518a9788f5",
+        "type": "ui-theme",
+        "name": "Default Theme",
+        "colors": {
+            "surface": "#fcfcfd",
+            "primary": "#0d74ce",
+            "bgPage": "#f9f9fb",
+            "groupBg": "#ffffff",
+            "groupOutline": "#d9d9e0"
+        },
+        "sizes": {
+            "density": "default",
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "5912c361403765eb",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "@flowfuse/node-red-dashboard": "1.33.0"
+        }
+    }
+]
